@@ -1,0 +1,28 @@
+{
+  "name": "final-project-group14",
+  "version": "1.0.0",
+  "description": "This is a D&D Game Simulator",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comp426-2022-fall/final-project-group14.git"
+  },
+  "keywords": [
+    "comp-426",
+    "D&D"
+  ],
+  "author": "COMP-426-Group-14",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/comp426-2022-fall/final-project-group14/issues"
+  },
+  "homepage": "https://github.com/comp426-2022-fall/final-project-group14#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "minimist": "^1.2.7",
+    "morgan": "^1.10.0"
+  }
+}
