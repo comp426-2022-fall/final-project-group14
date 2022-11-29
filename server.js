@@ -82,6 +82,21 @@ app.get("/character-summary", function(req, res){
     res.render("character", {userInfo: user});
 })
 
+//Story background
+
+//Encounter 1
+
+//Encounter 2
+app.get("/app/E2/", function(req, res){
+    res.sendFile(__dirname + "/html/battle.html");
+});
+app.get("/app/E2/fight", function(req, res){
+    res.sendFile(__dirname + "/html/combat1.0.html");
+});
+app.get("/app/E2/notyetfight", function(req, res){
+    res.sendFile(__dirname + "/html/combat1.1.html");
+});
+
 var port = 3000
 app.listen(port, function(req, res){
     console.log("Server is listening on port " + port+".")
