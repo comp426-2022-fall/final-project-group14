@@ -1,7 +1,21 @@
-const express = require("express")
-const minimist = require("minimist")
-const roll = require("./lib/roll.js")
-const node-fetch = require("node-fetch")
+// const express = require("express")
+// const minimist = require("minimist")
+// const roll = require("./lib/roll.js")
+// let fetch = import("node-fetch")
+import fetch from 'node-fetch';
+import express from 'express';
+import roll from './lib/roll.js';
+import minimist from 'minimist';
+
+//setup __dirname
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+console.log(__dirname);
+
+
 
 const app = express()
 
@@ -42,12 +56,11 @@ app.post("/app/", function(req, res){
 
 // User choose race
 app.get("/app/choose-race/", function(req, res){
-
     res.sendFile(__dirname + "/html/choose-race.html")
 })
 
 // User choose race
-app.post("/app/choose-race/", function(req, res){
+app.post("/app/choose-race/", async function(req, res){
     //button to choose race from dwarf, elf, half, human
     const race = req.body.race;
     
@@ -126,15 +139,37 @@ app.get("/character-summary", function(req, res){
 //Encounter 1
 
 //Encounter 2
-app.get("/app/E2/", function(req, res){
-    res.sendFile(__dirname + "/html/battle.html");
-});
-app.get("/app/E2/fight", function(req, res){
-    res.sendFile(__dirname + "/html/combat1.0.html");
-});
-app.get("/app/E2/notyetfight", function(req, res){
-    res.sendFile(__dirname + "/html/combat1.1.html");
-});
+
+    //start page of battle, explaining the background
+    app.get("/app/E2/", function(req, res){
+        res.sendFile(__dirname + "/html/battle.html");
+    });
+    
+        //if the player choose to join the fight, here is the page
+    app.get("/app/E2/fight", async function(req, res){   
+        const combatorder = "https://www.dnd5eapi.co/api/rule-sections/the-order-of-combat";
+        const response = await fetch(combatorder);
+        const order = await response.json();
+        const orderarray = order.desc.split("\n");
+
+        res.setHeader('Content-type','text/html');
+        res.write('<h1>&#128293 Fight! &#128293</h1>');
+        res.write('<h3>Related Rules:</h3>');
+        const combatrule1 = orderarray.slice(1,3);
+        res.write(orderarray[0]);
+        res.write('<br>');
+        res.write(combatrule1.toString());
+        res.write('<br>');
+        const combatrule2 = orderarray.slice(4,8);
+        res.write(combatrule2.toString());
+        //console.log(orderarray);
+        res.send();
+    });
+
+        //if the player choose "try to hide", he is forced to join
+    app.get("/app/E2/notyetfight", function(req, res){
+        res.sendFile(__dirname + "/html/combat1.1.html");
+    });
 
 var port = 3000
 app.listen(port, function(req, res){
