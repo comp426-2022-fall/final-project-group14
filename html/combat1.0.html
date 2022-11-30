@@ -7,5 +7,14 @@
 
  <body>
   <h1>&#128293 Fight! &#128293</h1>
+  <script>
+    const URL = "https://www.dnd5eapi.co/api/rule-sections/the-order-of-combat";
+    async function callapi() {
+        const result = await fetch(URL)
+        result.json().then(data => {
+            console.log(data);
+        })
+    }
+  </script>
  </body>
 </html>
