@@ -4,7 +4,8 @@
   "description": "This is a D&D Game Simulator",
   "main": "server.js",
   "scripts": {
-    "test": "nodemon server.js"
+    "test": "nodemon server.js",
+    "start": "node server.js"
   },
   "type": "module",
   "repository": {
@@ -29,5 +30,10 @@
     "node-fetch": "^3.3.0",
     "nodemon": "^2.0.20",
     "path": "^0.12.7"
-  }
+  },
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "devDependencies": {}
 }
