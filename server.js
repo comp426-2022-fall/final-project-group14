@@ -197,7 +197,7 @@ app.get("/character-summary", function(req, res){
             initi = "You are second!";
         }
         res.render("combat-initiative",{initirule:initirule,position:stepposition, initiative:step2,playernum:playernum,wolfnum:wolfnum,order:initi});
-    })
+    });
 
     //TODO: find a way to remember the order 
 
@@ -217,7 +217,32 @@ app.get("/character-summary", function(req, res){
         //console.log(acts);
         //console.log(acts.slice(38,42));
         res.render("combat-actions",{hide:hide,dodge:dodge,attack:attack,turns:step4,intro:intro,head:head})
-    })
+    });
+
+    //Three choices
+    //first:attack
+    const attack = "https://www.dnd5eapi.co/api/rule-sections/making-an-attack";
+    const response3 = await fetch(attack);
+    const attacks = await response3.json();
+    const attackrule = attacks.desc.split("\n");
+    app.get("/app/E2/fight/turns/attack", function(req,res){
+        const first = attackrule.slice(0,1);
+        const sec = attackrule.slice(1,7);
+        //console.log(attackrule.slice(0,7));
+        res.render("combat-actions-attack",{first:first,sec:sec});
+    });
+
+    //second:dodge
+    app.get("/app/E2/fight/turns/dodge", function(req,res){
+        res.render("combat-actions-dodge");
+    });
+
+    //third:hide
+    app.get("/app/E2/fight/turns/hide", function(req,res){
+        res.render("combat-actions-hide");
+    });
+
+    
 
 
 
