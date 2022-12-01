@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Step1:Surprise</title>
+</head>
+
+<body>
+    <h1>&#128293 Fight! &#128293</h1>
+    <h3>Related Rules:</h3>
+    <p>
+        <%= first %>
+    </p>
+    <p>
+        <%= second %>
+    </p>
+    <p>
+        <%= third %>
+    </p>
+    <p>
+        <%= forth %>
+    </p>
+    <br>
+    <h2>Step 1: Determine Surprise</h2>
+    <h4>
+        Because you choose to join the fight, you have the chance to surprise the winter wolf. To determine whether you success, you need to roll a 20-side dice. If your number + dexterity is bigger than the number of wolf + wolf wisdom, you win!
+    </h4>
+    <button onclick="rolladice()"> roll your dice </button>
+    <h5>Your roll is:</h5>
+    <p id="player" style="color:white"><%= playernum %></p>
+    <h5>The wolf's roll is:</h5>
+    <p id="wolf" style="color:white"><%= wolfnum %></p>
+    <p id="result" style="color:white"><%= win %></p>
+    <form action="/app/E2/fight" method="post">
+        <button type="submit">Next</button>
+    <script>
+        function rolladice(){
+            document.getElementById("player").style.color="black";
+            document.getElementById("wolf").style.color="black";
+            document.getElementById("result").style.color="black";
+        }
+    </script>
+</body>
+</html>

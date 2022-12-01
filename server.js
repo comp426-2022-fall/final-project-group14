@@ -6,6 +6,8 @@ import fetch from 'node-fetch';
 import express from 'express';
 import roll from './lib/roll.js';
 import minimist from 'minimist';
+import path from 'path';
+
 
 //setup __dirname
 import { fileURLToPath } from 'url';
@@ -16,8 +18,9 @@ const __dirname = dirname(__filename);
 console.log(__dirname);
 
 
-
-const app = express()
+const app = express();
+app.set('views',path.join(__dirname,'views'));
+app.set("view engine", "ejs");
 
 // User profile json; should contain all personal information about the user
 // The final step of character setup displays this info
@@ -144,27 +147,40 @@ app.get("/character-summary", function(req, res){
     app.get("/app/E2/", function(req, res){
         res.sendFile(__dirname + "/html/battle.html");
     });
-    
+
         //if the player choose to join the fight, here is the page
-    app.get("/app/E2/fight", async function(req, res){   
+        //step1:determine surprise
+    var win = "you lose";
+    app.get("/app/E2/fight", async function(req, res){  
+        
+        //info from api
         const combatorder = "https://www.dnd5eapi.co/api/rule-sections/the-order-of-combat";
         const response = await fetch(combatorder);
         const order = await response.json();
         const orderarray = order.desc.split("\n");
-
-        res.setHeader('Content-type','text/html');
-        res.write('<h1>&#128293 Fight! &#128293</h1>');
-        res.write('<h3>Related Rules:</h3>');
         const combatrule1 = orderarray.slice(1,3);
-        res.write(orderarray[0]);
-        res.write('<br>');
-        res.write(combatrule1.toString());
-        res.write('<br>');
-        const combatrule2 = orderarray.slice(4,8);
-        res.write(combatrule2.toString());
-        //console.log(orderarray);
-        res.send();
+        const combatrule2 = orderarray.slice(5,7);
+        const playernum = Math.floor(Math.random() * 20);
+        const wolfnum = Math.floor(Math.random() * 20);
+        //const dex = ability["str"];
+        
+        if(playernum >= wolfnum){
+            win = "you win!";
+        }
+        res.render("combat-surprise",{first:orderarray[0],second:combatrule1.toString(),third:orderarray[4],forth:combatrule2.toString(),playernum:playernum,wolfnum:wolfnum,win:win});
     });
+        //step 2: roll initiative
+    app.post("/app/E2/fight",async function(req,res){
+        if(win==="you win!"){
+            const combatorder = "https://www.dnd5eapi.co/api/rule-sections/the-order-of-combat";
+            const response = await fetch(combatorder);
+            const order = await response.json();
+            const orderarray = order.desc.split("\n");
+            const step2 = orderarray.slice(9,10);
+            res.render("combat-initiative");
+        }
+        res.sendFile(__dirname + "/html/combat1.1.html");
+    })
 
         //if the player choose "try to hide", he is forced to join
     app.get("/app/E2/notyetfight", function(req, res){
