@@ -179,7 +179,7 @@ app.get("/app/accept", function(req, res){
     })
     app.get("/app/survivalcheck/checkresult",function(req,res){
         if(exaust ==1){
-            return res.redirect("/app/survivalcheck/exaustion");
+            return res.redirect("/app/survivalcheck/exhaustion");
         }
         else if(totalfail >= 5){
             return res.redirect("/app/survivalcheck/fail");
@@ -188,8 +188,8 @@ app.get("/app/accept", function(req, res){
         }
     })
     //if the player becomes exausted
-    const exaustion = "https://www.dnd5eapi.co/api/conditions/exhaustion";
-    const result = await fetch(exaustion);
+    const exhaustion = "https://www.dnd5eapi.co/api/conditions/exhaustion";
+    const result = await fetch(exhaustion);
     const words = await result.json();
     const description = words.desc;
     const explanation = description.slice(0,1);
@@ -199,28 +199,28 @@ app.get("/app/accept", function(req, res){
     const level4 = description.slice(4,5);
     const level5 = description.slice(5,6);
 
-    app.get("/app/survivalcheck/exaustion",function(req,res){
+    app.get("/app/survivalcheck/exhaustion",function(req,res){
         var level = Math.floor(Math.random() * 5) + 1;
         console.log(level)
         //1 - Disadvantage on ability checks
         if(level == 1){
-            res.render('exaustion',{level:level1,explanation:explanation})
+            res.render('exhaustion',{level:level1,explanation:explanation})
         } 
         //2 - Speed halved
         if(level ==2){
-            res.render('exaustion',{level:level2,explanation:explanation})
+            res.render('exhaustion',{level:level2,explanation:explanation})
         } 
         //Disadvantage on attack rolls and saving throws
         if(level ==3){
-            res.render('exaustion',{level:level3,explanation:explanation})
+            res.render('exhaustion',{level:level3,explanation:explanation})
         }
         //4 - Hit point maximum halved
         if(level==4){
-            res.render('exaustion',{level:level4,explanation:explanation})
+            res.render('exhaustion',{level:level4,explanation:explanation})
         }
         //5 - Speed reduced to 0
         if(level ==5){
-            res.render('exaustion',{level:level5,explanation:explanation})
+            res.render('exhaustion',{level:level5,explanation:explanation})
         }
     })
 
