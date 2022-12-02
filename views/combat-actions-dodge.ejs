@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodge</title>
+</head>
+<body>
+    <h1>You chose to dodge.</h1>
+    <h2>Related rules:</h2>
+    <p>
+        <%= dodge %>
+    </p>
+    <br>
+    <h3>
+        You are unable to make an attack, but the possibility of being hurt by the wolf also became 10% from 30%.
+    </h3>
+    <p>You can now roll the dice to see whether the wolf hits you.</p>
+    <button onclick="rolladice()"> roll your dice </button>
+    <p id="wolf" style="color:white">
+        The wolf hits you with <%= wolfharm %> points.
+    </p>
+    <form action="/app/E2/fight/turns" method="get">
+        <button type="submit">Next</button>
+    <script>
+        function rolladice(){
+            document.getElementById("wolf").style.color="black";
+        }
+    </script>
+</body>
+</html>

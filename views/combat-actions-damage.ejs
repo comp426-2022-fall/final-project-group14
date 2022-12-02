@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Damage roll</title>
+</head>
+<body>
+    <h1>Congratulations! you hit the wolf successfully!</h1>
+    <h2>Now you need to roll another dice to see how much you harm your enemy</h2>
+    <h2>Related rules:</h2>
+    <p>
+        <%= dama %>
+    </p>
+    <br>
+    <h3>
+        In this scenario, we assume the wolf will hit you 6 points with 30% of possibility.
+    </h3>
+    <br>
+    <h3>Roll your damage roll:</h3>
+    <button onclick="rolladice()"> roll your dice </button>
+    <h4>Your roll is:</h4>
+    <p id="player" style="color:white"><%= playernum %></p>
+    <p id="result" style="color:white">
+        You hurt the wolf with <%= playernum %> points! The wolf still has <%= wolflife %> points left.
+    </p>
+    <p id="wolf" style="color:white">
+        The wolf also hits you with <%= wolfharm %> points.
+    </p>
+    <form action="/app/E2/fight/turns" method="get">
+        <button type="submit">Next</button>
+    <script>
+        function rolladice(){
+            document.getElementById("player").style.color="black";
+            document.getElementById("result").style.color="black";
+            document.getElementById("wolf").style.color="black";
+        }
+    </script>
+</body>
+</html>

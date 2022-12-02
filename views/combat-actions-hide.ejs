@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hide</title>
+</head>
+<body>
+    <h1>You chose to hide.</h1>
+    <h2>Related rules:</h2>
+    <p>
+        <%= hide %>
+    </p>
+    <br>
+    <h3>
+        In this case, you need to roll a 20-side dice. If your roll + Dex modifier is bigger than 10, you hide successfully. Otherwise, you have a 30% chance hurt by the wolf.
+    </h3>
+    <p>You can now roll the dice to see whether you hide successfully.</p>
+    <button onclick="rolladice()"> roll your dice </button>
+    <p id="num" style="color:white">
+        You rolled a <%= playernum %>.
+    </p>
+    <p id="hide" style="color:white">
+        <%= success %>
+    </p>
+    <p id="wolf" style="color:white">
+        The wolf hits you with <%= wolfharm %> points.
+    </p>
+    <form action="/app/E2/fight/turns" method="get">
+        <button type="submit">Next</button>
+    <script>
+        function rolladice(){
+            document.getElementById("wolf").style.color="black";
+            document.getElementById("hide").style.color="black";
+            document.getElementById("num").style.color="black";
+        }
+    </script>
+    
+</body>
+</html>
