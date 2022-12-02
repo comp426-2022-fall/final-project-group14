@@ -155,12 +155,15 @@ app.get("/app/accept", function(req, res){
     res.sendFile(__dirname + "/html/encounter1.html")
 })
     //survival check for the player leads to exaustion, failure, or the battle
+    var totalfail = 0;
+    var continuousfail = 0;
+    var exaust = 0;
+    var dice =0;
+    var dices = [];
     app.get("/app/survivalcheck",function(req,res){
-        var totalfail = 0;
-        var continuousfail = 0;
-        var dice =0;
         for (var i=0; i<8; i++) {
             dice = Math.floor(Math.random() * 20) + 1;
+            dices[i]=dice;
             if(dice <= 10){
                 totalfail+=1;
                 continuousfail+=1;
@@ -169,13 +172,19 @@ app.get("/app/accept", function(req, res){
                 continuousfail=0;
             }
             if(continuousfail >= 3){
-                return res.redirect("/app/survivalcheck/exaustion");
+                exaust=1;
             }
         }
-        if(totalfail >= 5){
-            return res.redirect("/app/survivalcheck/fail")
+        res.render('survivalcheck',{dices:dices})
+    })
+    app.get("/app/survivalcheck/checkresult",function(req,res){
+        if(exaust ==1){
+            return res.redirect("/app/survivalcheck/exaustion");
+        }
+        else if(totalfail >= 5){
+            return res.redirect("/app/survivalcheck/fail");
         }else{
-            res.redirect("/app/E2/")
+            res.redirect("/app/E2/");
         }
     })
     //if the player becomes exausted
@@ -183,6 +192,7 @@ app.get("/app/accept", function(req, res){
     const result = await fetch(exaustion);
     const words = await result.json();
     const description = words.desc;
+    const explanation = description.slice(0,1);
     const level1 = description.slice(1,2);
     const level2 = description.slice(2,3);
     const level3 = description.slice(3,4);
@@ -194,23 +204,23 @@ app.get("/app/accept", function(req, res){
         console.log(level)
         //1 - Disadvantage on ability checks
         if(level == 1){
-            res.render('exaustion',{level:level1})
+            res.render('exaustion',{level:level1,explanation:explanation})
         } 
         //2 - Speed halved
         if(level ==2){
-            res.render('exaustion',{level:level2})
+            res.render('exaustion',{level:level2,explanation:explanation})
         } 
         //Disadvantage on attack rolls and saving throws
         if(level ==3){
-            res.render('exaustion',{level:level3})
+            res.render('exaustion',{level:level3,explanation:explanation})
         }
         //4 - Hit point maximum halved
         if(level==4){
-            res.render('exaustion',{level:level4})
+            res.render('exaustion',{level:level4,explanation:explanation})
         }
         //5 - Speed reduced to 0
         if(level ==5){
-            res.render('exaustion',{level:level5})
+            res.render('exaustion',{level:level5,explanation:explanation})
         }
     })
 
