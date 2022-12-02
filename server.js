@@ -193,6 +193,7 @@ app.get("/app/survivalcheck/fail",function(req,res){
     const orderarray = order.desc.split("\n");
     const combatrule1 = orderarray.slice(1,3);
     const combatrule2 = orderarray.slice(5,7);
+    var wolflife = 75;
 
     //start page of battle, explaining the background
     app.get("/app/E2/", function(req, res){
@@ -206,7 +207,6 @@ app.get("/app/survivalcheck/fail",function(req,res){
         const playernum = roll(20,1,1).results[0];
         const wolfnum = roll(20,1,1).results[0];
         const choice = "Because you choose to join the fight, you have the chance to surprise the winter wolf. To determine whether you success, you need to roll a 20-side dice. If your number + dexterity is bigger than the number of wolf + wolf wisdom, you win!"
-        //const dex = ability["str"];
         const surp = orderarray.slice(12,20);
         
         if(playernum >= wolfnum){
@@ -214,7 +214,8 @@ app.get("/app/survivalcheck/fail",function(req,res){
         }else{
             win = "you lose";
         }
-        //console.log(orderarray.slice(20,24));
+        
+        //TODO: add wolf wisdom and player's dex
 
         res.render("combat-surprise",{surp:surp,choice:choice,first:orderarray[0],second:combatrule1.toString(),third:orderarray[4],forth:combatrule2.toString(),playernum:playernum,wolfnum:wolfnum,win:win});
     });
@@ -260,6 +261,7 @@ app.get("/app/survivalcheck/fail",function(req,res){
         const hide = acts.slice(38,42);
         //console.log(acts);
         //console.log(acts.slice(38,42));
+    //TODO: end the fight
         res.render("combat-actions",{hide:hide,dodge:dodge,attack:attack,turns:step4,intro:intro,head:head})
     });
 
@@ -269,28 +271,93 @@ app.get("/app/survivalcheck/fail",function(req,res){
     const response3 = await fetch(attack);
     const attacks = await response3.json();
     const attackrule = attacks.desc.split("\n");
+
+    //roll the attack roll first:
+    var attackroll = 0;
+    var attackresult = "you miss"
     app.get("/app/E2/fight/turns/attack", function(req,res){
         const first = attackrule.slice(0,1);
         const sec = attackrule.slice(1,7);
-        //console.log(attackrule.slice(0,7));
-        res.render("combat-actions-attack",{first:first,sec:sec});
+        const attroll = attackrule.slice(10,14);
+        const modi = attackrule.slice(14,18);
+        //console.log(attackrule.slice(10,18));
+        attackroll = roll(20,1,1).results[0];
+
+//TODO: add modifiers
+        if(attackroll >= 13){
+            attackresult = "you hit!";
+        } else{
+            attackresult = "you miss";
+        }
+        res.render("combat-actions-attack",{result:attackresult,playernum:attackroll,modi:modi,attroll:attroll,first:first,sec:sec});
+    });
+
+    //if hit, damage roll:
+    const damage = "https://www.dnd5eapi.co/api/rule-sections/damage-and-healing";
+    const response4 = await fetch(damage);
+    const damages = await response4.json();
+    const damagerule = damages.desc.split("\n");
+    app.post("/app/E2/fight/turns/attack", function(req,res){
+        var wolfpossi = roll(10,1,1).results[0];
+        var wolfharm = 0;
+        if(wolfpossi >= 8){
+            wolfharm = 6;
+        }
+        const dama = damagerule.slice(12,17);
+
+        if(attackresult==="you hit!"){
+            //TODO: add modifiers and player's hit point
+            var playernum = roll(15,1,1).results[0];
+            wolflife -= playernum;
+            res.render("combat-actions-damage",{wolflife:wolflife,playernum:playernum,dama:dama,wolfharm:wolfharm});
+        } else{
+            //TODO: change player's hit
+            res.render("combat-actions-miss",{wolfharm:wolfharm});
+        }
     });
 
     //second:dodge
     app.get("/app/E2/fight/turns/dodge", function(req,res){
-        res.render("combat-actions-dodge");
+        const dodge = acts.slice(28,31);
+        var wolfpossi = roll(10,1,1).results[0];
+        var wolfharm = 0;
+        if(wolfpossi >= 8){
+            wolfharm = 3;
+        }
+        //TODO: change player's hit
+        res.render("combat-actions-dodge",{dodge:dodge,wolfharm:wolfharm});
     });
 
     //third:hide
     app.get("/app/E2/fight/turns/hide", function(req,res){
-        res.render("combat-actions-hide");
+        const hide = acts.slice(38,42);
+        var hi_suc = roll(20,1,1).results[0];
+        //TODO:add dex modifiers
+        var success = "";
+        var wolfharm = 0;
+        if(hi_suc >= 10){
+            success = "You hide successfully!"
+        } else{
+            success = "You are seen by the wolf."
+            var wolfpossi = roll(10,1,1).results[0];
+            var wolfharm = 0;
+            if(wolfpossi >= 8){
+                wolfharm = 6;
+            }
+        }
+        //TODO: change player's hit
+        res.render("combat-actions-hide",{hide:hide,playernum:hi_suc,success:success,wolfharm:wolfharm});
     });
 
-    
-
-
-
-
+    //ending
+    app.get("/app/ending",function(req,res){
+        //TODO: win if the wolf is dead, lose if the wolf is not dead or the player is dead.
+        if(wolflife <= 0){
+            res.sendFile(__dirname + "/html/ending-win.html");
+        } else{
+            res.sendFile(__dirname + "/html/ending-fail.html");
+        }
+    });
 
 var port = 3000
 app.listen(port, function(req, res){

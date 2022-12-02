@@ -13,6 +13,38 @@
     <p>
         <%= sec %>
     </p>
-    <h3>In this case, you only has one target, which is the wolf. </h3>
+    <h3>
+        In this case, you only has one target, which is the wolf. You don't have advantage or disadvantage. But keep in mind the wolf has an armor class of 13.
+    </h3>
+
+    <br>
+    
+    <h3>The next step is to roll your attack roll to see if you hit your enemy.</h3>
+    <p>Notice that this is not how much you hurt the enemy. This is to see whether you hit your enemy!</p>
+    <br>
+    <p>
+        <%= attroll %>
+    </p>
+    <p>
+        <%= modi %>
+    </p>
+    <br>
+    <p>There is also some specical cases: </p>
+    <p>
+        If you roll a 20, you hit your enemy automatically. If you roll a 1, you attack misses regardless of any modifiers or the target's AC.
+    </p>
+    <h2>Now, roll your dice:</h2>
+    <button onclick="rolladice()"> roll your dice </button>
+    <h4>Your roll is:</h4>
+    <p id="player" style="color:white"><%= playernum %></p>
+    <p id="result" style="color:white"><%= result %></p>
+    <form action="/app/E2/fight/turns/attack" method="post">
+        <button type="submit">Next</button>
+    <script>
+        function rolladice(){
+            document.getElementById("player").style.color="black";
+            document.getElementById("result").style.color="black";
+        }
+    </script>
 </body>
 </html>
