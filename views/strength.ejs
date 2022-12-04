@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Determine Your Strength!</title>
+</head>
+<body>
+    <h1>Strength</h1>
+    <img src="https://cdn.pixabay.com/photo/2017/08/31/04/01/d20-2699387_1280.png">
+    
+    <div>
+        <p>Result: </p>
+        <p id="result" style="color: white">
+            <%=roll%>
+        </p>
+    </div>
+    <br>
+    <div>
+        <p>Strength score: </p>
+        <p id="str" style="color: white"> 
+             <%=strength%>
+        </p>
+    </div>
+    <button onclick="rolladice()"> roll your dice </button>
+    <br>
+    <form action="dex/" method="get">
+        <button type="submit">Roll next</button>
+    </form>
+
+    <script>
+        function rolladice(){
+            document.getElementById("result").style.color="black";
+            document.getElementById("str").style.color="black";
+        }
+    </script>
+</body>
+</html>

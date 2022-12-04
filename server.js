@@ -7,6 +7,8 @@ import express from 'express';
 import roll from './lib/roll.js';
 import minimist from 'minimist';
 import path from 'path';
+//import Database from "better-sqlite3"
+import bonus from'./lib/get_ability_bonus.js';
 
 
 //setup __dirname
@@ -21,13 +23,20 @@ console.log(__dirname);
 const app = express();
 app.set('views',path.join(__dirname,'views'));
 app.set("view engine", "ejs");
-
+/*
+const db = new Database('dnd.db', (err) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log('Connected to the dnd user SQlite database.');
+  });
+*/
 // User profile json; should contain all personal information about the user
 // The final step of character setup displays this info
 var user = {}
 
 // an array of 6 abilities
-const ability = []
+var ability = []
 
 // API base url
 const base_url = "https://www.dnd5eapi.co/api/"
@@ -57,84 +66,139 @@ app.post("/app/", function(req, res){
     res.redirect("/app/choose-race");
 })
 
+var endpoint = "races/"
+var elf = "elf";
+var dwarf = "dwarf"
+var halfling = "halfing"
+var human = "human"  
+
+const elf_data = await fetch(base_url+endpoint+elf);
+const elf_json = await elf_data.json();
+const dwarf_data = await fetch(base_url+endpoint+ dwarf)
+const dwarf_json = await dwarf_data.json()
+const halfling_data = await fetch(base_url+endpoint+halfling)
+const halfling_json = await halfling_data.json()
+const human_data = await fetch(base_url+endpoint+human)
+const human_json = await human_data.json()
+
 // User choose race
-app.get("/app/choose-race/", function(req, res){
-    res.sendFile(__dirname + "/html/choose-race.html")
+app.get("/app/choose-race/", async function(req, res){
+    var elf_des = elf_json["alignment"]
+    var dwarf_des = dwarf_json["alignment"]
+    var halfling_des = halfling_json["alignment"]
+    var human_des = human_json["alignment"]
+
+    res.render("race", {elf: elf_des, dwarf: dwarf_des, halfling: halfling_des, human: human_des})
 })
 
 // User choose race
-app.post("/app/choose-race/", async function(req, res){
-    //button to choose race from dwarf, elf, half, human
-    const race = req.body.race;
+user["bonus"] = [0,0,0,0,0,0]
+app.get("/app/elf/", async function(req, res){
+    user["race"] = "elf"
+    var race_data = elf_json
+    ability = bonus(race_data)
+    user["bonus"] = ability
+    res.redirect("/app/ability/")
+})
+
+app.get("/app/dwarf/", function(req, res){
+    user["race"] = "dwarf"
+    var race_data = dwarf_json
+    ability = bonus(race_data)
+    user["bonus"] = ability
+    res.redirect("/app/ability/")
+})
+
+app.get("/app/halfling/", function(req, res){
+    user["race"] = "halfling"
+    var race_data = halfling_json
+    ability = bonus(race_data)
+    user["bonus"] = ability
+    res.redirect("/app/ability/")
+})
+
+app.get("/app/human/", function(req, res){
+    user["race"] = "human"
+    var race_data = human_json
+    ability = bonus(race_data)
+    user["bonus"] = ability
+    res.redirect("/app/ability/")
+})
+
+app.get("/app/class/", function(req, res){
     
-    user["race"] = race;
-
-    // TODO: pull info about race from DnD API
-    var endpoint = "race/"
-    var url = base_url + endpoint + race
-    const response = await fetch(url);
-    const data = await response.json();
-
-    // get ability bonuses for each race
-    var strength = 0
-    var dexterity = 0
-    var constitution = 0
-    var intelligence = 0
-    var wisdom = 0
-    var charisma = 0
-
-    const ability_bonuses = data.ability_bonuses;
-    for (var i=0; i<ability_bonuses.length; i++) {
-        // add ability bonuses to each character
-        var ability_num = ability_bonuses[i];
-        var ability_index = ability_num.ability_score.index;
-        var bonus = parseInt(ability_num.bonus)
-        switch (ability_index){
-            case "str":
-                strength = strength + bonus
-                break
-            case "dex":
-                dexterity = dexterity + bonus
-                break
-            case "con":
-                constitution = constitution + bonus
-                break
-            case "int":
-                intelligence = intelligence + bonus
-                break
-            case "wis":
-                wisdom = wisdom + bonus
-                break
-            case "cha":
-                charisma = charisma + bonus
-                break
-            default:
-                console.log("ability bonus not found: " + ability_index)          
-        }
-    }
-
-    // ability is global
-    ability.push({"str": strength})
-    ability.push({"dex": dexterity})
-    ability.push({"con": constitution})
-    ability.push({"int": intelligence})
-    ability.push({"wis": wisdom})
-    ability.push({"cha": charisma})
-
-    // put the ability array into user profile json
-    user["ability-score"] = ability
-
-    res.redirect("/app/ability");
 })
 
-// User choose ability
 app.get("/app/ability/", function(req, res){
     res.sendFile(__dirname + "/html/ability.html")
 })
 
+// User choose ability
+user["ability"] = [0,0,0,0,0,0];
+app.get("/app/ability/str/", function(req, res){
+    var result = roll(6, 1, 3).results[0]
+    user["ability"][0] = user["bonus"][0] + result
+    var strength = user["ability"][0]
+    res.render("strength", {roll: result, strength: strength})
+})
 
-app.get("/character-summary", function(req, res){
-    res.render("character", {userInfo: user});
+app.get("/app/ability/str/dex/", function(req, res){
+    var result = roll(6, 1, 3).results[0]
+    user["ability"][1] = user["bonus"][1] + result
+    var dex = user["ability"][1]
+    res.render("dexterity", {roll: result, dex: dex})
+})
+
+app.get("/app/ability/str/dex/con/", function(req, res){
+    var result = roll(6, 1, 3).results[0]
+    user["ability"][2] = user["bonus"][2] + result
+    var con = user["ability"][2]
+    res.render("constitution", {roll: result, con: con})
+})
+
+app.get("/app/ability/str/dex/con/int/", function(req, res){
+    var result = roll(6, 1, 3).results[0]
+    user["ability"][3] = user["bonus"][3] + result
+    var int = user["ability"][3]
+    res.render("intelligence", {roll: result, int: int})
+})
+
+app.get("/app/ability/str/dex/con/int/wis/", function(req, res){
+    var result = roll(6, 1, 3).results[0]
+    user["ability"][4] = user["bonus"][4] + result
+    var wis = user["ability"][4]
+    res.render("wisdom", {roll: result, wis:wis})
+})
+
+app.get("/app/ability/str/dex/con/int/wis/cha/", function(req, res){
+    var result = roll(6, 1, 3).results[0]
+    user["ability"][5] = user["bonus"][5] + result
+    var cha = user["ability"][5]
+    res.render("charisma", {roll: result, cha: cha})
+})
+
+app.get("/app/name/", function(req, res){
+    res.sendFile(__dirname + "/html/name.html")
+})
+
+app.post("/app/name/", function(req, res){
+    const name = req.body.name;
+    user["character-name"] = name;
+    res.redirect("/app/character-summary")
+})
+
+app.get("/app/character-summary/", function(req, res){
+    const name = user["character-name"]
+    const race = user["race"]
+    const score = user["ability"]
+    var str = score[0]
+    var dex = score[1]
+    var con = score[2]
+    var int = score[3]
+    var wis = score[4]
+    var cha  = score[5]
+
+    res.render("character-summary", {name:name, race:race, str:str, dex:dex, con:con, int:int, wis:wis, cha:cha});
 })
 
 //Story background

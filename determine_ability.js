@@ -1,6 +1,5 @@
 
-for (var i=1; i < 7; i++) {
-    var button_name = "button" + i;
+    var button_name = "button1";
     var button = document.getElementById(button_name);
     button.onclick = function() {
 
@@ -18,7 +17,7 @@ for (var i=1; i < 7; i++) {
     var randomImageSource2 = "images/" + randomDiceImage2;
     var randomImageSource3 = "images/" + randomDiceImage3;
 
-    var image_class = "img" + i
+    var image_class = "img1"
     var image1 = document.querySelectorAll(image_class)[0];
     var image2 = document.querySelectorAll(image_class)[1];
     var image3 = document.querySelectorAll(image_class)[2];
@@ -27,8 +26,7 @@ for (var i=1; i < 7; i++) {
     image2.setAttribute("src", randomImageSource2);
     image3.setAttribute("src", randomImageSource3);
 
-    var ability_name = "ability" + i
+    var ability_name = "ability1"
     var placeholder = document.getElementById(ability_name);
     placeholder.innerHTML = total;
     }
-}
