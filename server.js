@@ -98,7 +98,7 @@ app.get("/app/elf/", async function(req, res){
     var race_data = elf_json
     ability = bonus(race_data)
     user["bonus"] = ability
-    res.redirect("/app/ability/")
+    res.redirect("/app/class/")
 })
 
 app.get("/app/dwarf/", function(req, res){
@@ -106,7 +106,7 @@ app.get("/app/dwarf/", function(req, res){
     var race_data = dwarf_json
     ability = bonus(race_data)
     user["bonus"] = ability
-    res.redirect("/app/ability/")
+    res.redirect("/app/class/")
 })
 
 app.get("/app/halfling/", function(req, res){
@@ -114,7 +114,7 @@ app.get("/app/halfling/", function(req, res){
     var race_data = halfling_json
     ability = bonus(race_data)
     user["bonus"] = ability
-    res.redirect("/app/ability/")
+    res.redirect("/app/class/")
 })
 
 app.get("/app/human/", function(req, res){
@@ -122,11 +122,50 @@ app.get("/app/human/", function(req, res){
     var race_data = human_json
     ability = bonus(race_data)
     user["bonus"] = ability
+    res.redirect("/app/class/")
+})
+
+const endpoint2 = "classes/"
+const bar = "barbarian"
+const cleric = "cleric"
+const fighter = "fighter"
+const wizard = "wizard"
+
+const bar_data = await fetch(base_url+endpoint2+bar);
+const bar_json = await bar_data.json();
+const cleric_data = await fetch(base_url+endpoint2+ cleric)
+const cleric_json = await cleric_data.json()
+const fighter_data = await fetch(base_url+endpoint2+fighter)
+const fighter_json = await fighter_data.json()
+const wizard_data = await fetch(base_url+endpoint2+wizard)
+const wizard_json = await wizard_data.json()
+
+app.get("/app/class/", function(req, res){
+    res.sendFile(__dirname + "/html/class.html")
+})
+
+app.get("/app/barbarian/", function(req, res){
+    user["class"] = "barbarian"
+    user["hd"] = parseInt(bar_json["hit_die"])
     res.redirect("/app/ability/")
 })
 
-app.get("/app/class/", function(req, res){
-    
+app.get("/app/cleric/", function(req, res){
+    user["class"] = "cleric"
+    user["hd"] = parseInt(cleric_json["hit_die"])
+    res.redirect("/app/ability/")
+})
+
+app.get("/app/fighter/", function(req, res){
+    user["class"] = "fighter"
+    user["hd"] = parseInt(fighter_json["hit_die"])
+    res.redirect("/app/ability/")
+})
+
+app.get("/app/wizard/", function(req, res){
+    user["class"] = "wizard"
+    user["hd"] = parseInt(wizard_json["hit_die"])
+    res.redirect("/app/ability/")
 })
 
 app.get("/app/ability/", function(req, res){
@@ -190,6 +229,8 @@ app.post("/app/name/", function(req, res){
 app.get("/app/character-summary/", function(req, res){
     const name = user["character-name"]
     const race = user["race"]
+    const job = user["class"]
+    const hd = user["hd"]
     const score = user["ability"]
     var str = score[0]
     var dex = score[1]
@@ -198,7 +239,7 @@ app.get("/app/character-summary/", function(req, res){
     var wis = score[4]
     var cha  = score[5]
 
-    res.render("character-summary", {name:name, race:race, str:str, dex:dex, con:con, int:int, wis:wis, cha:cha});
+    res.render("character-summary", {name:name, race:race, job: job, hd:hd, str:str, dex:dex, con:con, int:int, wis:wis, cha:cha});
 })
 
 //Story background
