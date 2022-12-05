@@ -5,45 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Choose Race</title>
+    <link rel="stylesheet" href="/css/race.css" >
 </head>
 <body>
     <h1>First, Choose your Race</h1>
-    <h2>You can choose one of the following four races</h2>
+    <h3>You can choose one of the following four races</h3>
     
-    <div>
-        <h3>Elf</h3>
-        <img src="https://www.dndbeyond.com/avatars/thumbnails/7/639/420/618/636287075350739045.png">
-        <p><%= elf %></p>
-        <form action="/app/elf" method="get">
-            <button type="submit">ELF</button>
-        </form>
+    <div class="grid-container">
+        <div>
+            <h2>Elf</h2>
+            <img src="https://www.dndbeyond.com/avatars/thumbnails/7/639/420/618/636287075350739045.png">
+            <p><%= elf %></p>
+            <form action="/app/elf" method="get">
+                <button type="submit">ELF</button>
+            </form>
+        </div>
+        
+        <div>
+            <h2>Dwarf</h2>
+            <img src="https://www.dndbeyond.com/avatars/thumbnails/6/254/420/618/636271781394265550.png">
+            <p><%= dwarf %></p>
+            <form action="/app/dwarf" method="get">
+                <button type="submit">DWARF</button>
+            </form>
+        </div>
+    
+        <div>
+            <h2>Halfling</h2>
+            <img src="https://www.dndbeyond.com/avatars/thumbnails/6/256/420/618/636271789409776659.png">
+            <p><%= halfling %></p>
+            <form action="/app/halfling" method="get">
+                <button type="submit">HALFLING</button>
+            </form>
+        </div>
+    
+        <div>
+            <h2>Human</h2>
+            <img src="https://www.dndbeyond.com/avatars/thumbnails/6/258/420/618/636271801914013762.png">
+            <p><%= human %></p>
+            <form action="/app/human" method="get">
+                <button type="submit">HUMAN</button>
+            </form>
+        </div>
     </div>
     
-    <div>
-        <h3>Dwarf</h3>
-        <img src="https://www.dndbeyond.com/avatars/thumbnails/6/254/420/618/636271781394265550.png">
-        <p><%= dwarf %></p>
-        <form action="/app/dwarf" method="get">
-            <button type="submit">DWARF</button>
-        </form>
-    </div>
-
-    <div>
-        <h3>Halfling</h3>
-        <img src="https://www.dndbeyond.com/avatars/thumbnails/6/256/420/618/636271789409776659.png">
-        <p><%= halfling %></p>
-        <form action="/app/halfling" method="get">
-            <button type="submit">HALFLING</button>
-        </form>
-    </div>
-
-    <div>
-        <h3>Human</h3>
-        <img src="https://www.dndbeyond.com/avatars/thumbnails/6/258/420/618/636271801914013762.png">
-        <p><%= human %></p>
-        <form action="/app/human" method="get">
-            <button type="submit">HUMAN</button>
-        </form>
-    </div>
 </body>
 </html>

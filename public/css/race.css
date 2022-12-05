@@ -1,0 +1,70 @@
+*{
+    background-color: black;
+    font-family: Helvetica, sans-serif;
+    color: white;
+    text-align: center;
+}
+
+h1{
+    color: red;
+    font-family: Luminari, fantasy;
+}
+
+h3{
+    font-family: Luminari, fantasy;
+    text-align: left;
+}
+
+li{
+    font-family: Luminari, fantasy;
+    text-align: left;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+}
+
+p{
+    text-align: left;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 5px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px;
+}
+
+button {
+    background-color: red;
+    border-radius: 6px;
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    text-transform: uppercase;
+    width: 200px;
+    cursor: pointer;
+  }
+
+img {
+    height: 300px;
+    width: auto
+  }
+
+.center-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+.form1{
+    padding-top: 40px;
+}

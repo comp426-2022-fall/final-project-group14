@@ -3,26 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Character Summary</title>
+    <link rel="stylesheet" href="/css/race.css" >
 </head>
 <body>
-    <h1><%= name %></h1>
-    <h3>Race: <%=race%></h3>
-    <h3>Class: <%=job%></h3>
-    <h3>hit dice: <%=hd%></h3>
-    <h3>Ability</h3>
-    <ul>
-        <li>Strength: <%=str%></li>
-        <li>Dexterity: <%=dex%></li>
-        <li>Constitution: <%=con%></li>
-        <li>Intelligence: <%=int%></li>
-        <li>Wisdom: <%=wis%></li>
-        <li>Charisma: <%=cha%></li>
-    </ul>
-
-    <form action="/app/background" method="send">
-        <button>Start my journey!</button>
-    </form>
+        <h1><%= name %></h1>
+        <div class="center-screen">
+            <h3>Race: <%=race%></h3>
+            <h3>Class: <%=job%></h3>
+            <h3>Hit Dice: <%=hd%></h3>
+            <h3>Ability</h3>
+            <ul>
+                <li>Strength: <%=str%></li>
+                <li>Dexterity: <%=dex%></li>
+                <li>Constitution: <%=con%></li>
+                <li>Intelligence: <%=int%></li>
+                <li>Wisdom: <%=wis%></li>
+                <li>Charisma: <%=cha%></li>
+            </ul>
+        
+            <form action="/app/background" method="send">
+                <button>Start my journey!</button>
+            </form>
+        </div>
+    
 </body>
 </html>

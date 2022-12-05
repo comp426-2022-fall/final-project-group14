@@ -7,9 +7,8 @@ import express from 'express';
 import roll from './lib/roll.js';
 import minimist from 'minimist';
 import path from 'path';
-//import Database from "better-sqlite3"
+import Database from "better-sqlite3"
 import bonus from'./lib/get_ability_bonus.js';
-
 
 //setup __dirname
 import { fileURLToPath } from 'url';
@@ -19,18 +18,26 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 console.log(__dirname);
 
+//setup database
+const database = new Database("userInfo.db")
+db.pragma('journal_mode = WAL');
+
+const sqlInit = `CREATE TABLE users ( id INTEGER PRIMARY KEY AUTOINCREMENT, user VARCHAR, pass VARCHAR );`
+try {
+    db.exec(sqlInit);
+} catch (error) {
+}
+
+const sqlInit2 = `CREATE TABLE logs ( id INTEGER PRIMARY KEY AUTOINCREMENT, user VARCHAR, message VARCHAR, time VARCHAR);`
+try {
+    db.exec(sqlInit2);
+} catch (error) {
+}
 
 const app = express();
 app.set('views',path.join(__dirname,'views'));
 app.set("view engine", "ejs");
-/*
-const db = new Database('dnd.db', (err) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log('Connected to the dnd user SQlite database.');
-  });
-*/
+
 // User profile json; should contain all personal information about the user
 // The final step of character setup displays this info
 var user = {}
@@ -53,10 +60,16 @@ app.get("/app/", function(req, res){
 
 // User Login Enter info
 app.post("/app/", function(req, res){
-    // Get personal info from the signup page
     const firstName = req.body.fName;
     const lastName = req.body.lName;
     const email = req.body.email;
+
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+
+    const stmt1 = `INSERT INTO logs (user, message, time) VALUES ('${user}', 'attempted to login', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     
     //add personal info to user json
     user["fName"] = firstName;
