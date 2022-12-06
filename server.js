@@ -19,7 +19,7 @@ const __dirname = dirname(__filename);
 console.log(__dirname);
 
 //setup database
-const database = new Database("userInfo.db")
+const db = new Database("userInfo.db")
 db.pragma('journal_mode = WAL');
 
 const sqlInit = `CREATE TABLE users ( id INTEGER PRIMARY KEY AUTOINCREMENT, user VARCHAR, pass VARCHAR );`
@@ -67,9 +67,8 @@ app.post("/app/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
 
-    const stmt1 = `INSERT INTO logs (user, message, time) VALUES ('${user}', 'attempted to login', '${today.toISOString()}');`;
+    const stmt1 = `INSERT INTO logs (user, message, time) VALUES ('${email}', 'attempted to login', '${today.toISOString()}');`;
     db.exec(stmt1)
-
     
     //add personal info to user json
     user["fName"] = firstName;
