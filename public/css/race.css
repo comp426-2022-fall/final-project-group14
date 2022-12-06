@@ -68,3 +68,15 @@ img {
 .form1{
     padding-top: 40px;
 }
+
+.textbox{
+    width: 300px; 
+    height: 40px;
+    font-size: 20px;
+}
+
+.down-screen{
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+}

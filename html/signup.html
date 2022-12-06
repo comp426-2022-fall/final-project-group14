@@ -7,15 +7,26 @@
     <link href="/css/race.css" rel="stylesheet">
     
   </head>
-
   <body class="center-screen">
-    <form class="form1" action ="/app/" class="form-signin" method="POST">
+    <div>
       <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/Dungeons_%26_Dragons_5th_Edition_logo.svg/500px-Dungeons_%26_Dragons_5th_Edition_logo.svg.png" width="60" height="72">
-      <h1>Dungeons & Dragons</h1>
-      <input type="text" name="fName" class="form-control top" placeholder="First Name" required autofocus>
-      <input type="text" name="lName" class="form-control middle" placeholder="Last Name" required>
-      <input type="email" name="email" class="form-control bottom" placeholder="Email" required>
-      <button type="submit">Register</button>
-    </form>
+    </div>
+    
+    <div>
+      <form class="form1" action ="/app/" method="POST" autocomplete="off">
+        <h1>Login</h1>
+        <div>
+          <input type="email" name="email" class="textbox" placeholder="Email" required>
+        </div>
+        <div>
+          <input type="text" name="password" class="textbox" placeholder="Password" required>
+        </div>
+        <br>
+        <br>
+        <div>
+          <button type="submit">Log in</button>
+        </div>
+      </form>
+    </div>
   </body>
 </html>

@@ -22,15 +22,15 @@ console.log(__dirname);
 const db = new Database("userInfo.db")
 db.pragma('journal_mode = WAL');
 
-const sqlInit = `CREATE TABLE users ( id INTEGER PRIMARY KEY AUTOINCREMENT, user VARCHAR, pass VARCHAR );`
+const userInit = `CREATE TABLE users ( id INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, pass VARCHAR );`
 try {
-    db.exec(sqlInit);
+    db.exec(userInit);
 } catch (error) {
 }
 
-const sqlInit2 = `CREATE TABLE logs ( id INTEGER PRIMARY KEY AUTOINCREMENT, user VARCHAR, message VARCHAR, time VARCHAR);`
+const logInit = `CREATE TABLE logs ( id INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, message VARCHAR, time VARCHAR);`
 try {
-    db.exec(sqlInit2);
+    db.exec(logInit);
 } catch (error) {
 }
 
@@ -60,28 +60,51 @@ app.get("/app/", function(req, res){
 
 // User Login Enter info
 app.post("/app/", function(req, res){
-    const firstName = req.body.fName;
-    const lastName = req.body.lName;
     const email = req.body.email;
+    const pass = req.body.password;
 
+    const stmt = db.prepare(`SELECT * FROM users WHERE email='${email}' and pass='${pass}';`);
+    let row = stmt.get();
+
+    if (row === undefined) {
+        const userInfo = `
+        INSERT INTO users (email, pass) VALUES ('${email}', '${pass}')
+        `
+        db.exec(userInfo)
+        
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        const newLog = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'register account', '${today.toISOString()}');`;
+        db.exec(newLog)
+    }
+    req.app.set('email', email);
+    req.app.set('pass', pass);
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
-
-    const stmt1 = `INSERT INTO logs (user, message, time) VALUES ('${email}', 'attempted to login', '${today.toISOString()}');`;
-    db.exec(stmt1)
-    
-    //add personal info to user json
-    user["fName"] = firstName;
-    user["lName"] = lastName;
-    user["email"] = email;
-
+    const stmt2 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'log in', '${today.toISOString()}');`;
+    db.exec(stmt2)
     res.redirect("/app/choose-race");
 })
+
+app.get("/app/delete_account", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    let pass = req.app.get('pass')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'delete account and start over', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
+    const stmt2 = `DELETE FROM users WHERE email='${email}' and pass='${pass}'`
+    db.exec(stmt2)
+    user = {}
+
+    res.redirect("/app/")
+})  
 
 var endpoint = "races/"
 var elf = "elf";
 var dwarf = "dwarf"
-var halfling = "halfing"
+var halfling = "halfling"
 var human = "human"  
 
 const elf_data = await fetch(base_url+endpoint+elf);
@@ -95,10 +118,18 @@ const human_json = await human_data.json()
 
 // User choose race
 app.get("/app/choose-race/", async function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose race', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     var elf_des = elf_json["alignment"]
     var dwarf_des = dwarf_json["alignment"]
     var halfling_des = halfling_json["alignment"]
     var human_des = human_json["alignment"]
+    
+    console.log(halfling_json)
 
     res.render("race", {elf: elf_des, dwarf: dwarf_des, halfling: halfling_des, human: human_des})
 })
@@ -106,6 +137,12 @@ app.get("/app/choose-race/", async function(req, res){
 // User choose race
 user["bonus"] = [0,0,0,0,0,0]
 app.get("/app/elf/", async function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose race - elf', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     user["race"] = "elf"
     var race_data = elf_json
     ability = bonus(race_data)
@@ -114,6 +151,12 @@ app.get("/app/elf/", async function(req, res){
 })
 
 app.get("/app/dwarf/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose race - dwarf', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     user["race"] = "dwarf"
     var race_data = dwarf_json
     ability = bonus(race_data)
@@ -122,6 +165,12 @@ app.get("/app/dwarf/", function(req, res){
 })
 
 app.get("/app/halfling/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose race - halfling', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     user["race"] = "halfling"
     var race_data = halfling_json
     ability = bonus(race_data)
@@ -130,6 +179,12 @@ app.get("/app/halfling/", function(req, res){
 })
 
 app.get("/app/human/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose race - human', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     user["race"] = "human"
     var race_data = human_json
     ability = bonus(race_data)
@@ -153,47 +208,95 @@ const wizard_data = await fetch(base_url+endpoint2+wizard)
 const wizard_json = await wizard_data.json()
 
 app.get("/app/class/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose class', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     res.sendFile(__dirname + "/html/class.html")
 })
 
 app.get("/app/barbarian/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose class - barbarian', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     user["class"] = "barbarian"
     user["hd"] = parseInt(bar_json["hit_die"])
     res.redirect("/app/ability/")
 })
 
 app.get("/app/cleric/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose class - cleric', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     user["class"] = "cleric"
     user["hd"] = parseInt(cleric_json["hit_die"])
     res.redirect("/app/ability/")
 })
 
 app.get("/app/fighter/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose class - fighter', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     user["class"] = "fighter"
     user["hd"] = parseInt(fighter_json["hit_die"])
     res.redirect("/app/ability/")
 })
 
 app.get("/app/wizard/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose class - wizard', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     user["class"] = "wizard"
     user["hd"] = parseInt(wizard_json["hit_die"])
     res.redirect("/app/ability/")
 })
 
 app.get("/app/ability/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'roll ability', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     res.sendFile(__dirname + "/html/ability.html")
 })
 
 // User choose ability
-user["ability"] = [0,0,0,0,0,0];
 app.get("/app/ability/str/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'set strength', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     var result = roll(6, 1, 3).results[0]
+    user["ability"] = [0,0,0,0,0,0];
     user["ability"][0] = user["bonus"][0] + result
     var strength = user["ability"][0]
     res.render("strength", {roll: result, strength: strength})
 })
 
 app.get("/app/ability/str/dex/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'set dexterity', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     var result = roll(6, 1, 3).results[0]
     user["ability"][1] = user["bonus"][1] + result
     var dex = user["ability"][1]
@@ -201,6 +304,12 @@ app.get("/app/ability/str/dex/", function(req, res){
 })
 
 app.get("/app/ability/str/dex/con/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'set constitution', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     var result = roll(6, 1, 3).results[0]
     user["ability"][2] = user["bonus"][2] + result
     var con = user["ability"][2]
@@ -208,6 +317,12 @@ app.get("/app/ability/str/dex/con/", function(req, res){
 })
 
 app.get("/app/ability/str/dex/con/int/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'set intelligence', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     var result = roll(6, 1, 3).results[0]
     user["ability"][3] = user["bonus"][3] + result
     var int = user["ability"][3]
@@ -215,6 +330,12 @@ app.get("/app/ability/str/dex/con/int/", function(req, res){
 })
 
 app.get("/app/ability/str/dex/con/int/wis/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'set wisdom', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     var result = roll(6, 1, 3).results[0]
     user["ability"][4] = user["bonus"][4] + result
     var wis = user["ability"][4]
@@ -222,6 +343,12 @@ app.get("/app/ability/str/dex/con/int/wis/", function(req, res){
 })
 
 app.get("/app/ability/str/dex/con/int/wis/cha/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'set charisma', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     var result = roll(6, 1, 3).results[0]
     user["ability"][5] = user["bonus"][5] + result
     var cha = user["ability"][5]
@@ -229,6 +356,12 @@ app.get("/app/ability/str/dex/con/int/wis/cha/", function(req, res){
 })
 
 app.get("/app/name/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose character name', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     res.sendFile(__dirname + "/html/name.html")
 })
 
@@ -256,6 +389,12 @@ app.get("/app/character-summary/", function(req, res){
 
 //Story background
 app.get("/app/background", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'enter encounter 1', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
     res.sendFile(__dirname + "/html/background.html")
 })
     //Conversation with the two characters
@@ -359,6 +498,12 @@ app.get("/app/accept", function(req, res){
 
     //start page of battle, explaining the background
     app.get("/app/E2/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'enter encounter 2', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
         res.sendFile(__dirname + "/html/battle.html");
     });
 
