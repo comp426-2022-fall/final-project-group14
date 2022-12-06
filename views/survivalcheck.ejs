@@ -12,21 +12,27 @@
                 What is the survival check?
             </h2>
             <h3>
-                You will roll a 20-sided dice in 8 rounds. If the dice is larger than 10, you succeed in this round. 
+                You will roll a 20-sided dice for 8 rounds. If the dice is larger than 10, you succeed in this round. 
                 If you continuously fail for three times in 8 rounds, you enter exaustion mode.
                 If your total number of failures is larger than or equal to 5, you are half frozen to death.
                 Otherwise, you find a cabin on the outskirts of Hundelstone, and hear a loud roar, and the sounds of battle.
             </h3>
+            <h2>
+                What is exaustion mode?
+            </h2>
+            <h3>
+                <%= explanation %>
+            </h3>
             <h2>Now, roll your dice:</h2>
             <button onclick="rolladice()"> roll your dice </button>
             <h4>Your roll is:</h4>
-                <p id="player" style="color:white"><%= dices %></p>
+                <p id="player" style="color:black"><%= dices %></p>
             <form action="/app/survivalcheck/checkresult" method="send">
                 <button> Next </button>
             </form>
             <script>
                 function rolladice(){
-                    document.getElementById("player").style.color="black";
+                    document.getElementById("player").style.color="white";
                 }
             </script>
         </center>

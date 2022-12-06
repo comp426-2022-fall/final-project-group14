@@ -1,4 +1,8 @@
- 
+*{
+    background-color: black;
+    color: white;
+}
+
 h2 {
     margin-left: 20px;
     margin-right:20px;
@@ -20,7 +24,7 @@ h3 {
     height: 100%;
     top: 0;
     right: 0;
-    box-shadow:0 30px 30px 30px #ffffff inset;
+    box-shadow:0 30px 30px 30px black inset;
 }
 img{
     width: 100%;
@@ -33,7 +37,8 @@ img{
 }
 
 button {
-    background-color: rgb(82, 122, 186);
+    font-family: Luminari, fantasy;
+    background-color: red;
     border-radius: 6px;
     border: none;
     color: rgb(255, 255, 255);
