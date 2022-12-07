@@ -22,7 +22,7 @@ All the meeting details and progress details are located in [this file](../main/
 We have 3 members in our team. We divided our works evenly and often helped each other when we got stuck. [Here](../main/docs/roles.md) is the specific team roles we have individually.
 
 ## API Explained
-Because our simulator is a small game, we have many API endpoints. [Here](../main/docs/api_explained) is the link that give specific explainations for each part.
+Because our simulator is a small game, we have many API endpoints. [Here](../main/docs/api_explained.md) is the link that give specific explainations for each part.
 
 ## What's Next
 Due to the final season and the time constraint, we don't have the time and the energy to push this simulator to perfection. This is the [link](../main/docs/whatsnext.md) explaining what our next steps.
