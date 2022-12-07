@@ -8,20 +8,23 @@
     <link rel="stylesheet" href="/css/race.css" >
 </head>
 <body>
-        <h1><%= name %></h1>
+        <h1>Summary</h1>
         <div class="center-screen">
-            <h3>Race: <%=race%></h3>
-            <h3>Class: <%=job%></h3>
-            <h3>Hit Dice: <%=hd%></h3>
-            <h3>Ability</h3>
-            <ul>
-                <li>Strength: <%=str%></li>
-                <li>Dexterity: <%=dex%></li>
-                <li>Constitution: <%=con%></li>
-                <li>Intelligence: <%=int%></li>
-                <li>Wisdom: <%=wis%></li>
-                <li>Charisma: <%=cha%></li>
-            </ul>
+            <%data.forEach(function(chara) {%>
+                <h1>Name: <%=chara.name%></h1>
+                <h3>Race: <%=chara.race%></h3>
+                <h3>Class: <%=chara.class%></h3>
+                <h3>Hit Dice: <%=chara.hd%></h3>
+                <h3>Ability</h3>
+                <ul>
+                    <li>Strength: <%=chara.str%></li>
+                    <li>Dexterity: <%=chara.dex%></li>
+                    <li>Constitution: <%=chara.con%></li>
+                    <li>Intelligence: <%=chara.int%></li>
+                    <li>Wisdom: <%=chara.wis%></li>
+                    <li>Charisma: <%=chara.cha%></li>
+                </ul>
+            <%});%>
         <br>
         <br>
             <div>
@@ -30,7 +33,11 @@
                 </form>
                 <form action="/app/delete_account/" method="send">
                         <p style="text-align:center">Not satisfied?</p>
-                        <button>Delete and Start Over</button>
+                        <button>Delete my account</button>
+                </form>
+                <form action="/app/ability/" method="send">
+                    <p style="text-align:center">Not satisfied?</p>
+                    <button>Change ability</button>
                 </form>
             </div>
 

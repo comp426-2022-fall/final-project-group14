@@ -34,6 +34,12 @@ try {
 } catch (error) {
 }
 
+const chaInit = `CREATE TABLE characters ( id INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, name VARCHAR, race VARCHAR, class VARCHAR, hd VARCHAR, str VARCHAR, dex VARCHAR, con VARCHAR, int VARCHAR, wis VARCHAR, cha VARCHAR);`
+try {
+    db.exec(chaInit);
+} catch (error) {
+}
+
 const app = express();
 app.set('views',path.join(__dirname,'views'));
 app.set("view engine", "ejs");
@@ -62,29 +68,43 @@ app.get("/app/", function(req, res){
 app.post("/app/", function(req, res){
     const email = req.body.email;
     const pass = req.body.password;
+    req.app.set('email', email);
+    req.app.set('pass', pass);
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
 
     const stmt = db.prepare(`SELECT * FROM users WHERE email='${email}' and pass='${pass}';`);
     let row = stmt.get();
 
+    // If you have not registered, it will automatically generate new account for you
     if (row === undefined) {
+        //new user entry
         const userInfo = `
         INSERT INTO users (email, pass) VALUES ('${email}', '${pass}')
         `
         db.exec(userInfo)
         
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
+        //new character entry
+        const chaInfo = `
+        INSERT INTO characters (email) VALUES ('${email}')
+        `
+        db.exec(chaInfo)
+        
+        //new log
+        
         const newLog = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'register account', '${today.toISOString()}');`;
         db.exec(newLog)
+        res.redirect("/app/name/");
+    } else{
+        const stmt2 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'log in', '${today.toISOString()}');`;
+        db.exec(stmt2)
+        res.redirect("/app/character-summary/")
     }
-    req.app.set('email', email);
-    req.app.set('pass', pass);
-    const timeElapsed = Date.now();
-    const today = new Date(timeElapsed);
-    const stmt2 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'log in', '${today.toISOString()}');`;
-    db.exec(stmt2)
-    res.redirect("/app/choose-race");
+    
+
 })
+
+
 
 app.get("/app/delete_account", function(req, res){
     const timeElapsed = Date.now();
@@ -96,10 +116,36 @@ app.get("/app/delete_account", function(req, res){
 
     const stmt2 = `DELETE FROM users WHERE email='${email}' and pass='${pass}'`
     db.exec(stmt2)
+
+    const stamt3 = `DELETE FROM characters WHERE email='${email}'`
+    db.exec(stamt3)
     user = {}
 
     res.redirect("/app/")
-})  
+}) 
+
+app.get("/app/name/", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose character name', '${today.toISOString()}');`;
+    db.exec(stmt1)
+
+    res.sendFile(__dirname + "/html/name.html")
+})
+
+app.post("/app/name/", function(req, res){
+    const name = req.body.name;
+    req.app.set('character-name', name)
+    
+    let email = req.app.get('email')
+    const stmt2 = `
+    UPDATE characters SET name = '${name}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
+    res.redirect("/app/choose-race/")
+})
 
 var endpoint = "races/"
 var elf = "elf";
@@ -128,14 +174,12 @@ app.get("/app/choose-race/", async function(req, res){
     var dwarf_des = dwarf_json["alignment"]
     var halfling_des = halfling_json["alignment"]
     var human_des = human_json["alignment"]
-    
-    console.log(halfling_json)
 
     res.render("race", {elf: elf_des, dwarf: dwarf_des, halfling: halfling_des, human: human_des})
 })
 
 // User choose race
-user["bonus"] = [0,0,0,0,0,0]
+//user["bonus"] = [0,0,0,0,0,0]
 app.get("/app/elf/", async function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -143,11 +187,19 @@ app.get("/app/elf/", async function(req, res){
     const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose race - elf', '${today.toISOString()}');`;
     db.exec(stmt1)
 
-    user["race"] = "elf"
+    // update character table with race
+    var race = 'elf'
+    const stmt2 = `
+    UPDATE characters SET race = '${race}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
+    //user["race"] = "elf"
     req.app.set('race', 'elf')
+
     var race_data = elf_json
     ability = bonus(race_data)
-    user["bonus"] = ability
+    //user["bonus"] = ability
     req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
@@ -159,11 +211,17 @@ app.get("/app/dwarf/", function(req, res){
     const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose race - dwarf', '${today.toISOString()}');`;
     db.exec(stmt1)
 
-    user["race"] = "dwarf"
+    var race = 'dwarf'
+    const stmt2 = `
+    UPDATE characters SET race = '${race}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
+    //user["race"] = "dwarf"
     req.app.set('race', 'dwarf')
     var race_data = dwarf_json
     ability = bonus(race_data)
-    user["bonus"] = ability
+    //user["bonus"] = ability
     req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
@@ -175,11 +233,17 @@ app.get("/app/halfling/", function(req, res){
     const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose race - halfling', '${today.toISOString()}');`;
     db.exec(stmt1)
 
-    user["race"] = "halfling"
+    var race = 'halfling'
+    const stmt2 = `
+    UPDATE characters SET race = '${race}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
+    //user["race"] = "halfling"
     req.app.set('race', 'halfling')
     var race_data = halfling_json
     ability = bonus(race_data)
-    user["bonus"] = ability
+    //user["bonus"] = ability
     req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
@@ -191,11 +255,17 @@ app.get("/app/human/", function(req, res){
     const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose race - human', '${today.toISOString()}');`;
     db.exec(stmt1)
 
-    user["race"] = "human"
+    var race = 'human'
+    const stmt2 = `
+    UPDATE characters SET race = '${race}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
+    //user["race"] = "human"
     req.app.set('race', 'human')
     var race_data = human_json
     ability = bonus(race_data)
-    user["bonus"] = ability
+    //user["bonus"] = ability
     req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
@@ -232,10 +302,20 @@ app.get("/app/barbarian/", function(req, res){
     const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose class - barbarian', '${today.toISOString()}');`;
     db.exec(stmt1)
 
-    user["class"] = "barbarian"
+    
+
+    //user["class"] = "barbarian"
     req.app.set('class', 'barbarian')
-    user["hd"] = parseInt(bar_json["hit_die"])
+    //user["hd"] = parseInt(bar_json["hit_die"])
     req.app.set('hd', parseInt(bar_json["hit_die"]))
+
+    var job = 'barbarian'
+    var hd = parseInt(bar_json["hit_die"])
+    const stmt2 = `
+    UPDATE characters SET class = '${job}', hd = '${hd}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
     res.redirect("/app/ability/")
 })
 
@@ -246,9 +326,16 @@ app.get("/app/cleric/", function(req, res){
     const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose class - cleric', '${today.toISOString()}');`;
     db.exec(stmt1)
 
-    user["class"] = "cleric"
+    var job = 'cleric'
+    var hd = parseInt(cleric_json["hit_die"])
+    const stmt2 = `
+    UPDATE characters SET class = '${job}', hd = '${hd}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
+    //user["class"] = "cleric"
     req.app.set('class', 'cleric')
-    user["hd"] = parseInt(cleric_json["hit_die"])
+    //user["hd"] = parseInt(cleric_json["hit_die"])
     var hd = parseInt(cleric_json["hit_die"])
     req.app.set('hd', hd)
     res.redirect("/app/ability/")
@@ -261,9 +348,16 @@ app.get("/app/fighter/", function(req, res){
     const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose class - fighter', '${today.toISOString()}');`;
     db.exec(stmt1)
 
-    user["class"] = "fighter"
+    var job = 'fighter'
+    var hd = parseInt(fighter_json["hit_die"])
+    const stmt2 = `
+    UPDATE characters SET class = '${job}', hd = '${hd}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
+    //user["class"] = "fighter"
     req.app.set('class', 'fighter')
-    user["hd"] = parseInt(fighter_json["hit_die"])
+    //user["hd"] = parseInt(fighter_json["hit_die"])
     var hd = parseInt(fighter_json["hit_die"])
     req.app.set('hd', hd)
     res.redirect("/app/ability/")
@@ -276,9 +370,16 @@ app.get("/app/wizard/", function(req, res){
     const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose class - wizard', '${today.toISOString()}');`;
     db.exec(stmt1)
 
-    user["class"] = "wizard"
+    var job = 'wizard'
+    var hd = parseInt(wizard_json["hit_die"])
+    const stmt2 = `
+    UPDATE characters SET class = '${job}', hd = '${hd}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
+    //user["class"] = "wizard"
     req.app.set('class', 'wizard')
-    user["hd"] = parseInt(wizard_json["hit_die"])
+    //user["hd"] = parseInt(wizard_json["hit_die"])
     var hd = parseInt(wizard_json["hit_die"])
     req.app.set('hd', hd)
     res.redirect("/app/ability/")
@@ -304,10 +405,15 @@ app.get("/app/ability/str/", function(req, res){
 
     var result = roll(6, 1, 3).results[0]
     
-    user["ability"] = [0,0,0,0,0,0];
+    //user["ability"] = [0,0,0,0,0,0];
     const bonus = app.get('bonus')
-    user["ability"][0] = bonus[0] + result
-    var strength = user["ability"][0]
+    var strength = bonus[0] + result
+
+    const stmt2 = `
+    UPDATE characters SET str = '${strength}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
     req.app.set('str', strength)
     res.render("strength", {roll: result, strength: strength})
 })
@@ -321,9 +427,14 @@ app.get("/app/ability/str/dex/", function(req, res){
 
     var result = roll(6, 1, 3).results[0]
     const bonus = app.get('bonus')
-    user["ability"][1] = bonus[1] + result
-    var dex = user["ability"][1]
+    var dex = bonus[1] + result
     req.app.set('dex', dex)
+
+    const stmt2 = `
+    UPDATE characters SET dex = '${dex}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
     res.render("dexterity", {roll: result, dex: dex})
 })
 
@@ -336,9 +447,14 @@ app.get("/app/ability/str/dex/con/", function(req, res){
 
     var result = roll(6, 1, 3).results[0]
     const bonus = app.get('bonus')
-    user["ability"][2] = bonus[2] + result
-    var con = user["ability"][2]
+    var con = bonus[2] + result
     req.app.set('con', con)
+
+    const stmt2 = `
+    UPDATE characters SET con = '${con}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
     res.render("constitution", {roll: result, con: con})
 })
 
@@ -351,9 +467,14 @@ app.get("/app/ability/str/dex/con/int/", function(req, res){
 
     var result = roll(6, 1, 3).results[0]
     const bonus = app.get('bonus')
-    user["ability"][3] = bonus[3] + result
-    var int = user["ability"][3]
+    var int = bonus[3] + result
     req.app.set('int', int)
+
+    const stmt2 = `
+    UPDATE characters SET int = '${int}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
     res.render("intelligence", {roll: result, int: int})
 })
 
@@ -366,9 +487,14 @@ app.get("/app/ability/str/dex/con/int/wis/", function(req, res){
 
     var result = roll(6, 1, 3).results[0]
     const bonus = app.get('bonus')
-    user["ability"][4] = bonus[4] + result
-    var wis = user["ability"][4]
+    var wis = bonus[4] + result
     req.app.set('wis', wis)
+
+    const stmt2 = `
+    UPDATE characters SET wis = '${wis}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
     res.render("wisdom", {roll: result, wis:wis})
 })
 
@@ -381,45 +507,31 @@ app.get("/app/ability/str/dex/con/int/wis/cha/", function(req, res){
 
     var result = roll(6, 1, 3).results[0]
     const bonus = app.get('bonus')
-    user["ability"][5] = bonus[5] + result
-    var cha = user["ability"][5]
+    var cha = bonus[5] + result
     req.app.set('cha', cha)
+
+    const stmt2 = `
+    UPDATE characters SET cha = '${cha}' WHERE email = '${email}'
+    `
+    db.exec(stmt2)
+
     res.render("charisma", {roll: result, cha: cha})
-})
-
-app.get("/app/name/", function(req, res){
-    const timeElapsed = Date.now();
-    const today = new Date(timeElapsed);
-    let email = req.app.get('email')
-    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose character name', '${today.toISOString()}');`;
-    db.exec(stmt1)
-
-    res.sendFile(__dirname + "/html/name.html")
-})
-
-app.post("/app/name/", function(req, res){
-    const name = req.body.name;
-    user["character-name"] = name;
-    app.req.set('character-name', name)
-    res.redirect("/app/character-summary")
 })
 
 //var hd = roll(user["hd"],1,1).results[0] + 10*user["bonus"][2]
 
 app.get("/app/character-summary/", function(req, res){
-    const name = req.get('character-name')
-    const race = req.get('race')
-    const job = user["class"]
-    const hd = user["hd"]
-    const score = user["ability"]
-    var str = score[0]
-    var dex = score[1]
-    var con = score[2]
-    var int = score[3]
-    var wis = score[4]
-    var cha  = score[5]
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'view character summary', '${today.toISOString()}');`;
+    db.exec(stmt1)
 
-    res.render("character-summary", {name:name, race:race, job: job, hd:hd, str:str, dex:dex, con:con, int:int, wis:wis, cha:cha});
+    const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
+    var all = stmt2.all();
+    console.log(all)
+    
+    res.render("character-summary", {data: all});
 })
 
 //Story background
