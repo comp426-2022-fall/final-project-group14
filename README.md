@@ -16,10 +16,10 @@ Here is the link for our demo to help you understand how this simulator works.
 5. Stop the server using `Ctr+C`
 
 ## Planning
-All the meeting details and progress details are located in this file. We actively used GitHub features such as fork, merge, and pull to complete these projects.
+All the meeting details and progress details are located in [this file](../docs/plan.md). We actively used GitHub features such as fork, merge, and pull to complete these projects.
 
 ## Team Roles
-We have 3 members in our team. We divided our works evenly and often helped each other when we got stuck. Here is the specific team roles we have individually.
+We have 3 members in our team. We divided our works evenly and often helped each other when we got stuck. [Here](../docs/roles.md) is the specific team roles we have individually.
 
 ## API Explained
 Because our simulator is a small game, we have many API endpoints. Here is the link that give specific explainations for each part.
