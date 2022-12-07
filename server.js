@@ -4,7 +4,6 @@ import roll from './lib/roll.js';
 import path from 'path';
 import Database from "better-sqlite3"
 import bonus from'./lib/get_ability_bonus.js';
-import minimist from 'minimist';
 
 //setup __dirname
 import { fileURLToPath } from 'url';
@@ -12,8 +11,6 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const args = minimist(process.argv.slice(2))
 
 //setup database
 const db = new Database("userInfo.db")
@@ -51,11 +48,6 @@ app.use(express.urlencoded({ extended: true}));
 app.use(express.json())
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
-
-// 404 NOT FOUND
-app.use(function(req, res){
-	res.status(404).send("404 NOT FOUND");
-});
 
 //root page
 app.get("/", function(req, res){
@@ -831,9 +823,6 @@ app.get("/app/accept", function(req, res){
     });
 
 var port = 3000
-if (args.port) {
-    port = args.port
-}
 
 app.listen(port, function(req, res){
     console.log("Server is listening on port " + port+".")
