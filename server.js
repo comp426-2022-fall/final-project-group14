@@ -775,7 +775,7 @@ app.get("/app/accept", function(req, res){
     //third:hide
     app.get("/app/E2/fight/turns/hide", function(req,res){
         const hide = acts.slice(38,42);
-        var hi_suc = roll(20,1,1).results[0]+req.app.get('bonus')[1];
+        var hi_suc = roll(20,1,1).results[0]+3;
         //console.log(user["bonus"]);
         var success = "";
         var wolfharm = 0;
