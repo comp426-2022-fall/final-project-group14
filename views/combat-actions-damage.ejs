@@ -14,7 +14,7 @@
     </h4>
     <br>
     <h3>
-        In this scenario, we assume the wolf will hit you 6 points with 30% of possibility.
+        In this scenario, we assume the wolf will hit you 6 points with 30% of possibility. And your damage roll is determined by your dice roll + strength modifier.
     </h3>
     <br>
     <h3>Roll your damage roll:</h3>
@@ -25,7 +25,7 @@
         You hurt the wolf with <%= playernum %> points! The wolf still has <%= wolflife %> points left.
     </p>
     <p id="wolf" style="color:rgb(0, 0, 0)">
-        The wolf also hits you with <%= wolfharm %> points.
+        The wolf also hits you with <%= wolfharm %> points. You have <%= hd %> points left.
     </p>
     <form action="/app/E2/fight/turns" method="get">
         <button type="submit">Next</button>
