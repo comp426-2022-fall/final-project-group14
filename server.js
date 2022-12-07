@@ -50,6 +50,11 @@ app.use(express.json())
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
 
+// 404 NOT FOUND
+app.use(function(req, res){
+	res.status(404).send("404 NOT FOUND");
+});
+
 //root page
 app.get("/", function(req, res){
     res.redirect("/app/");
