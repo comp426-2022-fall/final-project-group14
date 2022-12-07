@@ -1,11 +1,6 @@
-// const express = require("express")
-// const minimist = require("minimist")
-// const roll = require("./lib/roll.js")
-// let fetch = import("node-fetch")
 import fetch from 'node-fetch';
 import express from 'express';
 import roll from './lib/roll.js';
-import minimist from 'minimist';
 import path from 'path';
 import Database from "better-sqlite3"
 import bonus from'./lib/get_ability_bonus.js';
@@ -302,15 +297,14 @@ app.get("/app/barbarian/", function(req, res){
     const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose class - barbarian', '${today.toISOString()}');`;
     db.exec(stmt1)
 
-    
 
     //user["class"] = "barbarian"
     req.app.set('class', 'barbarian')
     //user["hd"] = parseInt(bar_json["hit_die"])
-    req.app.set('hd', parseInt(bar_json["hit_die"]))
+    req.app.set('hd', parseInt(bar_json["hit_die"]))+45
 
     var job = 'barbarian'
-    var hd = parseInt(bar_json["hit_die"])
+    var hd = parseInt(bar_json["hit_die"]) +45
     const stmt2 = `
     UPDATE characters SET class = '${job}', hd = '${hd}' WHERE email = '${email}'
     `
@@ -327,7 +321,7 @@ app.get("/app/cleric/", function(req, res){
     db.exec(stmt1)
 
     var job = 'cleric'
-    var hd = parseInt(cleric_json["hit_die"])
+    var hd = parseInt(cleric_json["hit_die"])+45
     const stmt2 = `
     UPDATE characters SET class = '${job}', hd = '${hd}' WHERE email = '${email}'
     `
@@ -336,7 +330,7 @@ app.get("/app/cleric/", function(req, res){
     //user["class"] = "cleric"
     req.app.set('class', 'cleric')
     //user["hd"] = parseInt(cleric_json["hit_die"])
-    var hd = parseInt(cleric_json["hit_die"])
+    var hd = parseInt(cleric_json["hit_die"])+45
     req.app.set('hd', hd)
     res.redirect("/app/ability/")
 })
@@ -349,7 +343,8 @@ app.get("/app/fighter/", function(req, res){
     db.exec(stmt1)
 
     var job = 'fighter'
-    var hd = parseInt(fighter_json["hit_die"])
+    var hd = parseInt(fighter_json["hit_die"])+45
+    console.log(hd)
     const stmt2 = `
     UPDATE characters SET class = '${job}', hd = '${hd}' WHERE email = '${email}'
     `
@@ -358,7 +353,7 @@ app.get("/app/fighter/", function(req, res){
     //user["class"] = "fighter"
     req.app.set('class', 'fighter')
     //user["hd"] = parseInt(fighter_json["hit_die"])
-    var hd = parseInt(fighter_json["hit_die"])
+    var hd = parseInt(fighter_json["hit_die"])+45
     req.app.set('hd', hd)
     res.redirect("/app/ability/")
 })
@@ -371,7 +366,8 @@ app.get("/app/wizard/", function(req, res){
     db.exec(stmt1)
 
     var job = 'wizard'
-    var hd = parseInt(wizard_json["hit_die"])
+
+    var hd = parseInt(wizard_json["hit_die"])+45
     const stmt2 = `
     UPDATE characters SET class = '${job}', hd = '${hd}' WHERE email = '${email}'
     `
@@ -380,7 +376,7 @@ app.get("/app/wizard/", function(req, res){
     //user["class"] = "wizard"
     req.app.set('class', 'wizard')
     //user["hd"] = parseInt(wizard_json["hit_die"])
-    var hd = parseInt(wizard_json["hit_die"])
+    var hd = parseInt(wizard_json["hit_die"])+45
     req.app.set('hd', hd)
     res.redirect("/app/ability/")
 })
@@ -518,8 +514,6 @@ app.get("/app/ability/str/dex/con/int/wis/cha/", function(req, res){
     res.render("charisma", {roll: result, cha: cha})
 })
 
-//var hd = roll(user["hd"],1,1).results[0] + 10*user["bonus"][2]
-
 app.get("/app/character-summary/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -642,8 +636,6 @@ app.get("/app/accept", function(req, res){
     const combatrule1 = orderarray.slice(1,3);
     const combatrule2 = orderarray.slice(5,7);
     var wolflife = 75;
-    //var playerlife = roll(user["hd"],1,1).results[0];
-    var playerlife = user["hd"];
 
     //start page of battle, explaining the background
     app.get("/app/E2/", function(req, res){
@@ -652,6 +644,7 @@ app.get("/app/accept", function(req, res){
     let email = req.app.get('email')
     const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'enter encounter 2', '${today.toISOString()}');`;
     db.exec(stmt1)
+    
         res.sendFile(__dirname + "/html/battle.html");
     });
 
@@ -663,8 +656,12 @@ app.get("/app/accept", function(req, res){
         const wolfnum = roll(20,1,1).results[0];
         const choice = "Because you choose to join the fight, you have the chance to surprise the winter wolf. To determine whether you success, you need to roll a 20-side dice. If your number + dexterity is bigger than the number of wolf + wolf wisdom, you win!(p.s wolf wisdom is 12!!)"
         const surp = orderarray.slice(12,20);
+        let email = req.app.get('email')
+        const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
+        var all = stmt2.get();
+        var dex = all["dex"]
         
-        if(playernum+user["ability"][1]>= wolfnum+12){
+        if(playernum+dex>= wolfnum+12){
             wolflife -= 10;
             win = "you win! The wolf did not notice you, and you hit it with 10 points!";
         }else{
@@ -736,7 +733,7 @@ app.get("/app/accept", function(req, res){
         //console.log(attackrule.slice(10,18));
         attackroll = roll(20,1,1).results[0];
 
-        if(attackroll+user["bonus"][0] >= 13){
+        if(attackroll+3 >= 13){
             attackresult = "you hit!";
         } else{
             attackresult = "you miss";
@@ -749,18 +746,26 @@ app.get("/app/accept", function(req, res){
     const response4 = await fetch(damage);
     const damages = await response4.json();
     const damagerule = damages.desc.split("\n");
+
     app.post("/app/E2/fight/turns/attack", function(req,res){
-        console.log(playerlife);
         var wolfpossi = roll(10,1,1).results[0];
         var wolfharm = 0;
+        let email = req.app.get('email')
+        const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
+        var all = stmt2.get();
+        var playerlife = all["hd"]
         if(wolfpossi >= 8){
             wolfharm = 6;
-            playerlife -= wolfharm;
+            playerlife -= 6;
+            const stmt3 = `
+            UPDATE characters SET hd = '${playerlife}' WHERE email = '${email}'
+            `
+            db.exec(stmt3);
         }
         const dama = damagerule.slice(12,17);
 
         if(attackresult==="you hit!"){
-            var playernum = roll(15,1,1).results[0]+user["bonus"][0];
+            var playernum = roll(15,1,1).results[0]+3;
             wolflife -= playernum;
             res.render("combat-actions-damage",{hd:playerlife,wolflife:wolflife,playernum:playernum,dama:dama,wolfharm:wolfharm});
         } else{
@@ -770,12 +775,20 @@ app.get("/app/accept", function(req, res){
 
     //second:dodge
     app.get("/app/E2/fight/turns/dodge", function(req,res){
+        let email = req.app.get('email')
+        const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
+        var all = stmt2.get();
+        var playerlife = all["hd"]
         const dodge = acts.slice(28,31);
         var wolfpossi = roll(10,1,1).results[0];
         var wolfharm = 0;
         if(wolfpossi >= 8){
             wolfharm = 3;
             playerlife -= wolfharm;
+            const stmt3 = `
+            UPDATE characters SET hd = '${playerlife}' WHERE email = '${email}'
+            `
+            db.exec(stmt3);
         }
         res.render("combat-actions-dodge",{hd:playerlife,dodge:dodge,wolfharm:wolfharm});
     });
@@ -783,10 +796,15 @@ app.get("/app/accept", function(req, res){
     //third:hide
     app.get("/app/E2/fight/turns/hide", function(req,res){
         const hide = acts.slice(38,42);
-        var hi_suc = roll(20,1,1).results[0]+user["bonus"][1];
-        console.log(user["bonus"]);
+        var hi_suc = roll(20,1,1).results[0]+req.app.get('bonus')[1];
+        //console.log(user["bonus"]);
         var success = "";
         var wolfharm = 0;
+        let email = req.app.get('email')
+        const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
+        var all = stmt2.get();
+        var playerlife = all["hd"]
+
         if(hi_suc >= 10){
             success = "You hide successfully!"
         } else{
@@ -796,6 +814,10 @@ app.get("/app/accept", function(req, res){
             if(wolfpossi >= 8){
                 wolfharm = 6;
                 playerlife -= wolfharm;
+                const stmt3 = `
+            UPDATE characters SET hd = '${playerlife}' WHERE email = '${email}'
+            `
+            db.exec(stmt3);
             }
         }
         res.render("combat-actions-hide",{hd:playerlife,hide:hide,playernum:hi_suc,success:success,wolfharm:wolfharm});
@@ -803,8 +825,12 @@ app.get("/app/accept", function(req, res){
 
     //ending
     app.get("/app/ending",function(req,res){
-        //TODO: win if the wolf is dead, lose if the wolf is not dead or the player is dead.
-        if(wolflife <= 0 && hd <=0){
+        let email = req.app.get('email')
+        const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
+        var all = stmt2.get();
+        var playerlife = all["hd"]
+
+        if(wolflife <= 0 && playerlife <=0){
             if(initi==="You are first to take action!"){
                 res.sendFile(__dirname + "/html/ending-win.html");
             } else{
