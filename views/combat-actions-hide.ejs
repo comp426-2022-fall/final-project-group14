@@ -3,35 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Hide</title>
+    <link rel="stylesheet" href="/css/E2.css" >
 </head>
 <body>
     <h1>You chose to hide.</h1>
     <h2>Related rules:</h2>
-    <p>
+    <h4>
         <%= hide %>
-    </p>
+    </h4>
     <br>
     <h3>
         In this case, you need to roll a 20-side dice. If your roll + Dex modifier is bigger than 10, you hide successfully. Otherwise, you have a 30% chance hurt by the wolf.
     </h3>
-    <p>You can now roll the dice to see whether you hide successfully.</p>
+    <h4>You can now roll the dice to see whether you hide successfully.</h4>
     <button onclick="rolladice()"> roll your dice </button>
-    <p id="num" style="color:white">
+    <p id="num" style="color:rgb(0, 0, 0)">
         You rolled a <%= playernum %>.
     </p>
-    <p id="hide" style="color:white">
+    <p id="hide" style="color:rgb(0, 0, 0)">
         <%= success %>
     </p>
-    <p id="wolf" style="color:white">
+    <p id="wolf" style="color:rgb(0, 0, 0)">
         The wolf hits you with <%= wolfharm %> points.
     </p>
     <form action="/app/E2/fight/turns" method="get">
         <button type="submit">Next</button>
     <script>
         function rolladice(){
-            document.getElementById("wolf").style.color="black";
-            document.getElementById("hide").style.color="black";
-            document.getElementById("num").style.color="black";
+            document.getElementById("wolf").style.color="white";
+            document.getElementById("hide").style.color="white";
+            document.getElementById("num").style.color="white";
         }
     </script>
     

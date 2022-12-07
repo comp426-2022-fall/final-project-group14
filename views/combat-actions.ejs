@@ -3,31 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Actions in Combat</title>
+    <link rel="stylesheet" href="/css/E2.css" >
 </head>
 <body>
     <h2>Step 4: Take turns</h2>
     <h3>Related Rules:</h3>
-    <p>
+    <h4>
         <%= turns %>
-    </p>
-    <p>
+    </h4>
+    <h4>
         <%= head %>
-    </p>
-    <p>
+    </h4>
+    <h4>
         <%= intro %>
-    </p>
+    </h4>
     <h3>Choice 1: Attack &#129338</h3>
-    <p>
+    <h4>
         <%= attack %>
-    </p>
+    </h4>
     <h3>Choice 2: Dodge &#129336</h3>
-    <p>
+    <h4>
         <%= dodge %>
-    </p>
+    </h4>
     <h3>Choice 3: Hide &#128034</h3>
-    <p>
+    <h4>
         <%= hide %> 
-    </p>
+    </h4>
     <h2>Now, you can choose your action:</h2>
     <form action="/app/E2/fight/turns/attack" method="get">
         <button type="submit">Attack</button>
