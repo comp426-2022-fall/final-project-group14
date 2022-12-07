@@ -7,9 +7,9 @@ We decided to make a prototype of Dungeons & Dragons. Since some of the team did
 We planned to finish an outline for the website before the next meeting. The outline should include not only major components of our website, such as log-in, Encounter 1, and Encounter 2 but also specific designs for the game so that it can act as a to-do list in the future.
 
 ## Meeting 2 - Nov 26
-We finished the outline and discussed some changes we made. We got two suitable APIs for our prototype. 
+We finished the [outline](https://docs.google.com/document/d/1cVl6CFbhwtwHg447aSxlRBuiTjHFsrGg3Z57h4gljc8/edit?usp=sharing) and discussed some changes we made. We got two suitable APIs for our prototype. 
 
-The plan before the next meeting is to come up with basic codes. Guning Shen is responsible for User Log-in, Xinyue Xing is responsible for Background and Encounter 1, and Wenjing Huang is responsible for Encounter 2.
+The plan before the next meeting is to come up with basic codes. Guning Shen is responsible for User Log-in, Xinyue Xing is responsible for Background and Encounter 1, and Wenjing Huang is responsible for Encounter 2. Each of us is responsible for both the frontend and the backend of the assigned part, so that we can communicate issues that we have.
 
 ## Meeting 3 - Dec 1
 The goal of this meeting is to come up with a plan for what we will do in the following days. We went through the current website together and found some minor problems that could be improved.
@@ -17,7 +17,7 @@ The goal of this meeting is to come up with a plan for what we will do in the fo
 We planned to finish the whole coding part by Dec 6 and discussed the front-end design together.
 
 ## Meeting 4 -Dec 6
-Before this meeting, we finished most of the coding including the database. The goal of this meeting is to bring up any confusion or misunderstanding that needs to be clarified before we record our demo.
+Before this meeting, we finished most of the coding including the database. The goal of this meeting is to bring up any confusion or misunderstanding that needs to be clarified before we record our demo. And we unified our front-end.
 
 The plan before the meeting on Dec 7 is to wrap everything up, including documentation, so that we can prepare and record the demo video next meeting.
 
