@@ -17,18 +17,21 @@ console.log(__dirname);
 const db = new Database("userInfo.db")
 db.pragma('journal_mode = WAL');
 
+// Userinfo table
 const userInit = `CREATE TABLE users ( id INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, pass VARCHAR );`
 try {
     db.exec(userInit);
 } catch (error) {
 }
 
+// Log table
 const logInit = `CREATE TABLE logs ( id INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, message VARCHAR, time VARCHAR);`
 try {
     db.exec(logInit);
 } catch (error) {
 }
 
+// Character table
 const chaInit = `CREATE TABLE characters ( id INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, name VARCHAR, race VARCHAR, class VARCHAR, hd VARCHAR, str VARCHAR, dex VARCHAR, con VARCHAR, int VARCHAR, wis VARCHAR, cha VARCHAR);`
 try {
     db.exec(chaInit);
@@ -39,13 +42,6 @@ const app = express();
 app.set('views',path.join(__dirname,'views'));
 app.set("view engine", "ejs");
 
-// User profile json; should contain all personal information about the user
-// The final step of character setup displays this info
-var user = {}
-
-// an array of 6 abilities
-var ability = []
-
 // API base url
 const base_url = "https://www.dnd5eapi.co/api/"
 
@@ -53,6 +49,11 @@ app.use(express.urlencoded({ extended: true}));
 app.use(express.json())
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
+
+//root page
+app.get("/", function(req, res){
+    res.redirect("/app/");
+})
 
 // User Login Page
 app.get("/app/", function(req, res){
@@ -85,12 +86,13 @@ app.post("/app/", function(req, res){
         `
         db.exec(chaInfo)
         
-        //new log
+        //new log entry
         
         const newLog = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'register account', '${today.toISOString()}');`;
         db.exec(newLog)
         res.redirect("/app/name/");
     } else{
+        // if you have registered and played the game, the web will direct you to the character summary page
         const stmt2 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'log in', '${today.toISOString()}');`;
         db.exec(stmt2)
         res.redirect("/app/character-summary/")
@@ -99,9 +101,8 @@ app.post("/app/", function(req, res){
 
 })
 
-
-
-app.get("/app/delete_account", function(req, res){
+// Delete account
+app.get("/app/delete_account/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
     let email = req.app.get('email')
@@ -114,11 +115,12 @@ app.get("/app/delete_account", function(req, res){
 
     const stamt3 = `DELETE FROM characters WHERE email='${email}'`
     db.exec(stamt3)
-    user = {}
-
+    
+    // Redirect to login after delete account
     res.redirect("/app/")
 }) 
 
+// User names character
 app.get("/app/name/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -157,7 +159,7 @@ const halfling_json = await halfling_data.json()
 const human_data = await fetch(base_url+endpoint+human)
 const human_json = await human_data.json()
 
-// User choose race
+// User chooses race
 app.get("/app/choose-race/", async function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -173,8 +175,7 @@ app.get("/app/choose-race/", async function(req, res){
     res.render("race", {elf: elf_des, dwarf: dwarf_des, halfling: halfling_des, human: human_des})
 })
 
-// User choose race
-//user["bonus"] = [0,0,0,0,0,0]
+// User chooses race
 app.get("/app/elf/", async function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -189,12 +190,10 @@ app.get("/app/elf/", async function(req, res){
     `
     db.exec(stmt2)
 
-    //user["race"] = "elf"
     req.app.set('race', 'elf')
 
     var race_data = elf_json
-    ability = bonus(race_data)
-    //user["bonus"] = ability
+    var ability = bonus(race_data)
     req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
@@ -212,11 +211,9 @@ app.get("/app/dwarf/", function(req, res){
     `
     db.exec(stmt2)
 
-    //user["race"] = "dwarf"
     req.app.set('race', 'dwarf')
     var race_data = dwarf_json
-    ability = bonus(race_data)
-    //user["bonus"] = ability
+    var ability = bonus(race_data)
     req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
@@ -234,11 +231,9 @@ app.get("/app/halfling/", function(req, res){
     `
     db.exec(stmt2)
 
-    //user["race"] = "halfling"
     req.app.set('race', 'halfling')
     var race_data = halfling_json
-    ability = bonus(race_data)
-    //user["bonus"] = ability
+    var ability = bonus(race_data)
     req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
@@ -256,11 +251,9 @@ app.get("/app/human/", function(req, res){
     `
     db.exec(stmt2)
 
-    //user["race"] = "human"
     req.app.set('race', 'human')
     var race_data = human_json
-    ability = bonus(race_data)
-    //user["bonus"] = ability
+    var ability = bonus(race_data)
     req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
@@ -280,6 +273,7 @@ const fighter_json = await fighter_data.json()
 const wizard_data = await fetch(base_url+endpoint2+wizard)
 const wizard_json = await wizard_data.json()
 
+// User chooses class
 app.get("/app/class/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -297,14 +291,11 @@ app.get("/app/barbarian/", function(req, res){
     const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose class - barbarian', '${today.toISOString()}');`;
     db.exec(stmt1)
 
-
-    //user["class"] = "barbarian"
-    req.app.set('class', 'barbarian')
-    //user["hd"] = parseInt(bar_json["hit_die"])
-    req.app.set('hd', parseInt(bar_json["hit_die"]))+45
-
     var job = 'barbarian'
     var hd = parseInt(bar_json["hit_die"]) +45
+    req.app.set('class', job)
+    req.app.set('hd', hd)
+
     const stmt2 = `
     UPDATE characters SET class = '${job}', hd = '${hd}' WHERE email = '${email}'
     `
@@ -327,10 +318,7 @@ app.get("/app/cleric/", function(req, res){
     `
     db.exec(stmt2)
 
-    //user["class"] = "cleric"
     req.app.set('class', 'cleric')
-    //user["hd"] = parseInt(cleric_json["hit_die"])
-    var hd = parseInt(cleric_json["hit_die"])+45
     req.app.set('hd', hd)
     res.redirect("/app/ability/")
 })
@@ -344,16 +332,12 @@ app.get("/app/fighter/", function(req, res){
 
     var job = 'fighter'
     var hd = parseInt(fighter_json["hit_die"])+45
-    console.log(hd)
     const stmt2 = `
     UPDATE characters SET class = '${job}', hd = '${hd}' WHERE email = '${email}'
     `
     db.exec(stmt2)
 
-    //user["class"] = "fighter"
     req.app.set('class', 'fighter')
-    //user["hd"] = parseInt(fighter_json["hit_die"])
-    var hd = parseInt(fighter_json["hit_die"])+45
     req.app.set('hd', hd)
     res.redirect("/app/ability/")
 })
@@ -366,17 +350,13 @@ app.get("/app/wizard/", function(req, res){
     db.exec(stmt1)
 
     var job = 'wizard'
-
     var hd = parseInt(wizard_json["hit_die"])+45
     const stmt2 = `
     UPDATE characters SET class = '${job}', hd = '${hd}' WHERE email = '${email}'
     `
     db.exec(stmt2)
 
-    //user["class"] = "wizard"
     req.app.set('class', 'wizard')
-    //user["hd"] = parseInt(wizard_json["hit_die"])
-    var hd = parseInt(wizard_json["hit_die"])+45
     req.app.set('hd', hd)
     res.redirect("/app/ability/")
 })
@@ -400,8 +380,6 @@ app.get("/app/ability/str/", function(req, res){
     db.exec(stmt1)
 
     var result = roll(6, 1, 3).results[0]
-    
-    //user["ability"] = [0,0,0,0,0,0];
     const bonus = app.get('bonus')
     var strength = bonus[0] + result
 
@@ -514,6 +492,8 @@ app.get("/app/ability/str/dex/con/int/wis/cha/", function(req, res){
     res.render("charisma", {roll: result, cha: cha})
 })
 
+// User can view their infomation here.
+// This page also has buttons for users to delete their account and update their ability information
 app.get("/app/character-summary/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -523,7 +503,6 @@ app.get("/app/character-summary/", function(req, res){
 
     const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
     var all = stmt2.all();
-    console.log(all)
     
     res.render("character-summary", {data: all});
 })
@@ -706,8 +685,8 @@ app.get("/app/accept", function(req, res){
         const attack = acts.slice(6,11);
         const dodge = acts.slice(28,31);
         const hide = acts.slice(38,42);
-        //console.log(acts);
-        //console.log(acts.slice(38,42));
+        
+
         if(wolflife<=0){
             res.redirect("/app/ending");
         } else{
@@ -730,7 +709,7 @@ app.get("/app/accept", function(req, res){
         const sec = attackrule.slice(1,7);
         const attroll = attackrule.slice(10,14);
         const modi = attackrule.slice(14,18);
-        //console.log(attackrule.slice(10,18));
+        
         attackroll = roll(20,1,1).results[0];
 
         if(attackroll+3 >= 13){
