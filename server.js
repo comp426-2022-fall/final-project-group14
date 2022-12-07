@@ -144,9 +144,11 @@ app.get("/app/elf/", async function(req, res){
     db.exec(stmt1)
 
     user["race"] = "elf"
+    req.app.set('race', 'elf')
     var race_data = elf_json
     ability = bonus(race_data)
     user["bonus"] = ability
+    req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
 
@@ -158,9 +160,11 @@ app.get("/app/dwarf/", function(req, res){
     db.exec(stmt1)
 
     user["race"] = "dwarf"
+    req.app.set('race', 'dwarf')
     var race_data = dwarf_json
     ability = bonus(race_data)
     user["bonus"] = ability
+    req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
 
@@ -172,9 +176,11 @@ app.get("/app/halfling/", function(req, res){
     db.exec(stmt1)
 
     user["race"] = "halfling"
+    req.app.set('race', 'halfling')
     var race_data = halfling_json
     ability = bonus(race_data)
     user["bonus"] = ability
+    req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
 
@@ -186,9 +192,11 @@ app.get("/app/human/", function(req, res){
     db.exec(stmt1)
 
     user["race"] = "human"
+    req.app.set('race', 'human')
     var race_data = human_json
     ability = bonus(race_data)
     user["bonus"] = ability
+    req.app.set('bonus', ability)
     res.redirect("/app/class/")
 })
 
@@ -225,7 +233,9 @@ app.get("/app/barbarian/", function(req, res){
     db.exec(stmt1)
 
     user["class"] = "barbarian"
+    req.app.set('class', 'barbarian')
     user["hd"] = parseInt(bar_json["hit_die"])
+    req.app.set('hd', parseInt(bar_json["hit_die"]))
     res.redirect("/app/ability/")
 })
 
@@ -237,7 +247,10 @@ app.get("/app/cleric/", function(req, res){
     db.exec(stmt1)
 
     user["class"] = "cleric"
+    req.app.set('class', 'cleric')
     user["hd"] = parseInt(cleric_json["hit_die"])
+    var hd = parseInt(cleric_json["hit_die"])
+    req.app.set('hd', hd)
     res.redirect("/app/ability/")
 })
 
@@ -249,7 +262,10 @@ app.get("/app/fighter/", function(req, res){
     db.exec(stmt1)
 
     user["class"] = "fighter"
+    req.app.set('class', 'fighter')
     user["hd"] = parseInt(fighter_json["hit_die"])
+    var hd = parseInt(fighter_json["hit_die"])
+    req.app.set('hd', hd)
     res.redirect("/app/ability/")
 })
 
@@ -261,7 +277,10 @@ app.get("/app/wizard/", function(req, res){
     db.exec(stmt1)
 
     user["class"] = "wizard"
+    req.app.set('class', 'wizard')
     user["hd"] = parseInt(wizard_json["hit_die"])
+    var hd = parseInt(wizard_json["hit_die"])
+    req.app.set('hd', hd)
     res.redirect("/app/ability/")
 })
 
@@ -284,9 +303,12 @@ app.get("/app/ability/str/", function(req, res){
     db.exec(stmt1)
 
     var result = roll(6, 1, 3).results[0]
+    
     user["ability"] = [0,0,0,0,0,0];
-    user["ability"][0] = user["bonus"][0] + result
+    const bonus = app.get('bonus')
+    user["ability"][0] = bonus[0] + result
     var strength = user["ability"][0]
+    req.app.set('str', strength)
     res.render("strength", {roll: result, strength: strength})
 })
 
@@ -298,8 +320,10 @@ app.get("/app/ability/str/dex/", function(req, res){
     db.exec(stmt1)
 
     var result = roll(6, 1, 3).results[0]
-    user["ability"][1] = user["bonus"][1] + result
+    const bonus = app.get('bonus')
+    user["ability"][1] = bonus[1] + result
     var dex = user["ability"][1]
+    req.app.set('dex', dex)
     res.render("dexterity", {roll: result, dex: dex})
 })
 
@@ -311,8 +335,10 @@ app.get("/app/ability/str/dex/con/", function(req, res){
     db.exec(stmt1)
 
     var result = roll(6, 1, 3).results[0]
-    user["ability"][2] = user["bonus"][2] + result
+    const bonus = app.get('bonus')
+    user["ability"][2] = bonus[2] + result
     var con = user["ability"][2]
+    req.app.set('con', con)
     res.render("constitution", {roll: result, con: con})
 })
 
@@ -324,8 +350,10 @@ app.get("/app/ability/str/dex/con/int/", function(req, res){
     db.exec(stmt1)
 
     var result = roll(6, 1, 3).results[0]
-    user["ability"][3] = user["bonus"][3] + result
+    const bonus = app.get('bonus')
+    user["ability"][3] = bonus[3] + result
     var int = user["ability"][3]
+    req.app.set('int', int)
     res.render("intelligence", {roll: result, int: int})
 })
 
@@ -337,8 +365,10 @@ app.get("/app/ability/str/dex/con/int/wis/", function(req, res){
     db.exec(stmt1)
 
     var result = roll(6, 1, 3).results[0]
-    user["ability"][4] = user["bonus"][4] + result
+    const bonus = app.get('bonus')
+    user["ability"][4] = bonus[4] + result
     var wis = user["ability"][4]
+    req.app.set('wis', wis)
     res.render("wisdom", {roll: result, wis:wis})
 })
 
@@ -350,8 +380,10 @@ app.get("/app/ability/str/dex/con/int/wis/cha/", function(req, res){
     db.exec(stmt1)
 
     var result = roll(6, 1, 3).results[0]
-    user["ability"][5] = user["bonus"][5] + result
+    const bonus = app.get('bonus')
+    user["ability"][5] = bonus[5] + result
     var cha = user["ability"][5]
+    req.app.set('cha', cha)
     res.render("charisma", {roll: result, cha: cha})
 })
 
@@ -368,14 +400,15 @@ app.get("/app/name/", function(req, res){
 app.post("/app/name/", function(req, res){
     const name = req.body.name;
     user["character-name"] = name;
+    app.req.set('character-name', name)
     res.redirect("/app/character-summary")
 })
 
 //var hd = roll(user["hd"],1,1).results[0] + 10*user["bonus"][2]
 
 app.get("/app/character-summary/", function(req, res){
-    const name = user["character-name"]
-    const race = user["race"]
+    const name = req.get('character-name')
+    const race = req.get('race')
     const job = user["class"]
     const hd = user["hd"]
     const score = user["ability"]
