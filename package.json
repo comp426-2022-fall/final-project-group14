@@ -4,8 +4,7 @@
   "description": "This is a D&D Game Simulator",
   "main": "server.js",
   "scripts": {
-    "test": "nodemon server.js",
-    "start": "node server.js"
+    "start": "nodemon server.js",
   },
   "type": "module",
   "repository": {
