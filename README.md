@@ -7,6 +7,9 @@ DnD stands for Dungeons & Dragons, which is a popular tabletop role-playing game
 
 Here is the link for our demo to help you understand how this simulator works.
 
+## Set up instruction
+1. clone this repository
+2.
 ## Planning
 
 
