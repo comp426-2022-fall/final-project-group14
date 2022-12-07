@@ -1,0 +1,24 @@
+*{
+    background-color: black;
+    font-family: Helvetica, sans-serif;
+    color: white;
+    text-align: center;
+}
+h3 {
+    margin-left: 30px;
+    margin-right:30px;
+}
+h4{
+    margin-left: 25px;
+    margin-right:25px;
+}
+button {
+    background-color: red;
+    border-radius: 6px;
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    text-transform: uppercase;
+    width: 200px;
+    cursor: pointer;
+}

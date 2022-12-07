@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Step1:Surprise</title>
+    <link rel="stylesheet" href="/css/E2.css" >
 </head>
 
 <body>
     <h1>&#128293 Fight! &#128293</h1>
     <h3>Related Rules:</h3>
-    <p>
+    <h4>
         <%= first %>
-    </p>
-    <p>
+    </h4>
+    <h4>
         <%= second %>
-    </p>
-    <p>
+    </h4>
+    <h4>
         <%= third %>
-    </p>
-    <p>
+    </h4>
+    <h4>
         <%= forth %>
-    </p>
-    <p>
+    </h4>
+    <h4>
         <%= surp %>
-    </p>
+    </h4>
     <br>
     <h2>Step 1: Determine Surprise</h2>
     <h4>
@@ -30,17 +31,17 @@
     </h4>
     <button onclick="rolladice()"> roll your dice </button>
     <h4>Your roll is:</h4>
-    <p id="player" style="color:white"><%= playernum %></p>
+    <p id="player" style="color:black"><%= playernum %></p>
     <h4>The wolf's roll is:</h4>
-    <p id="wolf" style="color:white"><%= wolfnum %></p>
-    <p id="result" style="color:white"><%= win %></p>
+    <p id="wolf" style="color:black"><%= wolfnum %></p>
+    <p id="result" style="color:black"><%= win %></p>
     <form action="/app/E2/fight" method="post">
         <button type="submit">Next</button>
     <script>
         function rolladice(){
-            document.getElementById("player").style.color="black";
-            document.getElementById("wolf").style.color="black";
-            document.getElementById("result").style.color="black";
+            document.getElementById("player").style.color="white";
+            document.getElementById("wolf").style.color="white";
+            document.getElementById("result").style.color="white";
         }
     </script>
 </body>

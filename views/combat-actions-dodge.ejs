@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Dodge</title>
+    <link rel="stylesheet" href="/css/E2.css" >
 </head>
 <body>
     <h1>You chose to dodge.</h1>
     <h2>Related rules:</h2>
-    <p>
+    <h4>
         <%= dodge %>
-    </p>
+    </h4>
     <br>
     <h3>
         You are unable to make an attack, but the possibility of being hurt by the wolf also became 10% from 30%.
     </h3>
-    <p>You can now roll the dice to see whether the wolf hits you.</p>
+    <h4>You can now roll the dice to see whether the wolf hits you.</h4>
     <button onclick="rolladice()"> roll your dice </button>
-    <p id="wolf" style="color:white">
+    <p id="wolf" style="color:rgb(0, 0, 0)">
         The wolf hits you with <%= wolfharm %> points.
     </p>
     <form action="/app/E2/fight/turns" method="get">
         <button type="submit">Next</button>
     <script>
         function rolladice(){
-            document.getElementById("wolf").style.color="black";
+            document.getElementById("wolf").style.color="white";
         }
     </script>
 </body>

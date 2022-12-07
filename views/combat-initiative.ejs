@@ -3,36 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Step2&3</title>
+    <link rel="stylesheet" href="/css/E2.css" >
 </head>
 <body>
     <h2>Step 2: Position & Step 3: Roll Initiative</h2>
     <h3>Related Rules:</h3>
-    <p>
+    <h4>
         <%= position %>
-    </p>
-    <p>
+    </h4>
+    <h4>
         <%= initiative %>
-    </p>
-    <p>
+    </h4>
+    <h4>
         Position: You are fairly close to the wolf. The wolf is at your front and Alvan is by your side but unable to fight for his injuries.
-    </p>
-    <p>
+    </h4>
+    <h4>
         <%= initirule %>
-    </p>
+    </h4>
     <h4>Roll the initiative to determine the attack order:</h4>
     <button onclick="rolladice()"> roll your dice </button>
     <h4>Your roll is:</h4>
-    <p id="player" style="color:white"><%= playernum %></p>
+    <p id="player" style="color:black"><%= playernum %></p>
     <h4>The wolf's roll is:</h4>
-    <p id="wolf" style="color:white"><%= wolfnum %></p>
-    <p id="result" style="color:white"><%= order %></p>
+    <p id="wolf" style="color:rgb(0, 0, 0)"><%= wolfnum %></p>
+    <p id="result" style="color:rgb(0, 0, 0)"><%= order %></p>
     <form action="/app/E2/fight/turns" method="get">
         <button type="submit">Next</button>
     <script>
         function rolladice(){
-            document.getElementById("player").style.color="black";
-            document.getElementById("wolf").style.color="black";
-            document.getElementById("result").style.color="black";
+            document.getElementById("player").style.color="white";
+            document.getElementById("wolf").style.color="white";
+            document.getElementById("result").style.color="white";
         }
     </script>
 </body>
