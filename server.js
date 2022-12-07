@@ -4,6 +4,7 @@ import roll from './lib/roll.js';
 import path from 'path';
 import Database from "better-sqlite3"
 import bonus from'./lib/get_ability_bonus.js';
+import minimist from 'minimist';
 
 //setup __dirname
 import { fileURLToPath } from 'url';
@@ -11,7 +12,8 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-console.log(__dirname);
+
+const args = minimist(process.argv.slice(2))
 
 //setup database
 const db = new Database("userInfo.db")
@@ -829,6 +831,10 @@ app.get("/app/accept", function(req, res){
     });
 
 var port = 3000
+if (args.port) {
+    port = args.port
+}
+
 app.listen(port, function(req, res){
     console.log("Server is listening on port " + port+".")
 })
