@@ -76,8 +76,8 @@ The third action is `HIDE`. This button takes user to `/app/E2/fight/turns/hide`
 
 ### /app/E2/fight/turns/attack
 This page introduces the rule of making an attack and allows the user to roll a dice to determine whether the attack is successful. 
-If the attack is successful, the `Next` button takes user to "combat-actions-miss.ejs" , which is a page tells user the attack fails. The user can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
-If the attack is successful, the `Next` button takes user to "combat-actions-damage.ejs", which is a page allowing user to roll another dice to determine how much the wolf is hurt. The user can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
+If the attack is successful, the `Next` button takes the player to "combat-actions-miss.ejs" , which is a page that tells the player the attack fails. The player can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
+If the attack is successful, the `Next` button takes the player to "combat-actions-damage.ejs", which is a page allowing the player to roll another dice to determine how much the wolf is hurt. The user can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
 
 ### /app/E2/fight/turns/dodge
 This page introduces the rule of dodging, and the user can roll the dice to determine whether the dodge is successful. The user can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
@@ -86,4 +86,4 @@ This page introduces the rule of dodging, and the user can roll the dice to dete
 This page introduces the rule of hiding, and the user can roll the dice to determine whether the hide is successful. The user can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
 
 ### /app/ending
-This page is the ending of the simulator. If the wolf is dead, the user will be directed to the page of "/html/ending-win.html". Otherwise, the user will be directed to the page of "/html/ending-fail.html". These pages tell the user the result, and the simulator officially ends in these pages. If the user want to start again, he/she can go back to `/app` to start over.
+This page is the ending of the simulator. If the wolf is dead, the player will be directed to the page "/html/ending-win.html". Otherwise, the user will be directed to the page "/html/ending-fail.html". These pages tell the user the result, and the simulator officially ends on these pages. If the user wants to start again, he/she can go back to `/app` to start over.
