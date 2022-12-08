@@ -578,6 +578,8 @@ app.get("/app/accept", function(req, res){
         res.render('survivalcheck',{dices:dices,explanation:explanation})
     })
 
+    // There are several results for the survival check.
+    // This redirects to different circumstances.
     app.get("/app/survivalcheck/checkresult",function(req,res){
         const timeElapsed = Date.now();
         const today = new Date(timeElapsed);
@@ -609,25 +611,26 @@ app.get("/app/accept", function(req, res){
         const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'enter exhaustion mode', '${today.toISOString()}');`;
         db.exec(stmt1)
         
+        // Roll a dice again to determine the level of exhaustion
         var level = Math.floor(Math.random() * 5) + 1;
         console.log(level)
-        //1 - Disadvantage on ability checks
+        // 1 - Disadvantage on ability checks
         if(level == 1){
             res.render('exhaustion',{level:level1})
         } 
-        //2 - Speed halved
+        // 2 - Speed halved
         if(level ==2){
             res.render('exhaustion',{level:level2})
         } 
-        //Disadvantage on attack rolls and saving throws
+        // Disadvantage on attack rolls and saving throws
         if(level ==3){
             res.render('exhaustion',{level:level3})
         }
-        //4 - Hit point maximum halved
+        // 4 - Hit point maximum halved
         if(level==4){
             res.render('exhaustion',{level:level4})
         }
-        //5 - Speed reduced to 0
+        // 5 - Speed reduced to 0
         if(level ==5){
             res.render('exhaustion',{level:level5})
         }
