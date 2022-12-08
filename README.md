@@ -7,7 +7,7 @@ DnD stands for Dungeons & Dragons, which is a popular tabletop role-playing game
 
 Here is the [link](https://youtu.be/bbbLmw-YlQ4) for our demo to help you understand how this simulator works.
 
-<img width="1208" alt="DnD Login" src="https://user-images.githubusercontent.com/77816197/206344686-bce1581d-0369-4833-9c62-cb836f614d39.png">
+<img width="1217" alt="Screenshot 2022-12-08 at 08 37 34" src="https://user-images.githubusercontent.com/77816197/206460411-f3e6110b-cbd7-46ff-a5a0-7e45f525e250.png">
 
 ## Set up
 
