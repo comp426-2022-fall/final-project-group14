@@ -86,7 +86,6 @@ app.post("/app/", function(req, res){
         db.exec(chaInfo)
         
         //new log entry
-        
         const newLog = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'register account', '${today.toISOString()}');`;
         db.exec(newLog)
         res.redirect("/app/name/");
@@ -529,14 +528,16 @@ app.get("/app/background", function(req, res){
 
     res.sendFile(__dirname + "/html/background.html")
 })
-    //Conversation with the two characters
-    app.get("/app/conversation", function(req, res){
-        res.sendFile(__dirname + "/html/conversation.html")
-    })
-    //if the player reject the offer, here is the page
-    app.get("/app/reject", function(req, res){
-        res.sendFile(__dirname + "/html/reject.html")
-    })
+
+//Conversation with the two characters
+app.get("/app/conversation", function(req, res){
+    res.sendFile(__dirname + "/html/conversation.html")
+})
+
+//if the player reject the offer, here is the page
+app.get("/app/reject", function(req, res){
+    res.sendFile(__dirname + "/html/reject.html")
+})
 
 //Encounter 1 - the story continues and leads to survival check
 app.get("/app/accept", function(req, res){
