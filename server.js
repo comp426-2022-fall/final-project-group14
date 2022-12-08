@@ -174,7 +174,7 @@ app.get("/app/choose-race/", async function(req, res){
     res.render("race", {elf: elf_des, dwarf: dwarf_des, halfling: halfling_des, human: human_des})
 })
 
-// User chooses race
+// User chooses elf
 app.get("/app/elf/", async function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -197,6 +197,7 @@ app.get("/app/elf/", async function(req, res){
     res.redirect("/app/class/")
 })
 
+// User chooses dwarf
 app.get("/app/dwarf/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -217,6 +218,7 @@ app.get("/app/dwarf/", function(req, res){
     res.redirect("/app/class/")
 })
 
+// User chooses halfling
 app.get("/app/halfling/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -237,6 +239,7 @@ app.get("/app/halfling/", function(req, res){
     res.redirect("/app/class/")
 })
 
+// User chooses human
 app.get("/app/human/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
