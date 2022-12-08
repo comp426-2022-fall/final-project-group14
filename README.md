@@ -17,6 +17,15 @@ Here is the [link](https://youtu.be/bbbLmw-YlQ4) for our demo to help you unders
 4. Go to the webpage `localhost:3000/`
 5. Stop the server using `Ctr+C`
 
+## Dependencies
+
+1. better-sqlite3(8.0.1)
+2. ejs(3.1.8)
+3. express(4.18.2)
+4. node-fetch(3.3.0)
+5. nodemon(2.0.20)
+6. path(0.12.7)
+
 ## Planning
 All the meeting details and progress details are located in [this file](../main/docs/plan.md). We actively used GitHub features such as fork, merge, and pull to complete these projects.
 
