@@ -42,10 +42,10 @@ This API tells you that you have to make the choice again if you want to enter f
 This page continues the story. The button takes the user to `/app/survivalcheck/`.
 
 ### /app/survivalcheck/
-This page introduces the definition of survival check and its result -- exhaustion mode. After clicking the button `Roll your dice`, the results of ten dices appear on the screen. The button `next` directs the user to different pages, since the result of survival check lead to different modes such as exaustion(`/app/survivalcheck/exhaustion`), failure(`/app/survivalcheck/fail`), and E2(`/app/E2`).
+This page introduces the definition of survival check and its result -- exhaustion mode. After clicking the button `Roll your dice`, the results of ten dices appear on the screen. The button `next` directs the user to different pages, since the result of the survival check leads to `/app/survivalcheck/checkresult/`, which redirect to different modes such as exaustion(`/app/survivalcheck/exhaustion`), failure(`/app/survivalcheck/fail`), and E2(`/app/E2`).
 
 ### /app/survivalcheck/exhaustion
-This page implies that the character enters exhaustion mode. It also shows the level of exhaustion. After clicking the button `Enter the battle`, the user can also go to `/app/E2` and begin Encounter2.
+This page takes the user to "exhaustion.ejs", which that the character enters exhaustion mode. It also shows the level of exhaustion. After clicking the button `Enter the battle`, the user can also go to `/app/E2` and begin Encounter2.
 
 ### /app/survivalcheck/fail
 This page tells the user that the character doesn't survive the cold damage. The button `let's try again` directs to `/app/survivalcheck/`.
@@ -63,21 +63,21 @@ This endpoint has an app.get page and an app.post page. The app.get page introdu
 The app.post page is the second and the third steps of combat. After rolling the dice, the `next` button takes the user to the next step, which is `/app/E2/fight/turns`.
 
 ### /app/E2/fight/turns
-This page is where the combat actually starts. There are 3 buttons that represent 3 types of actions an user can choose during combat. After each action, the user will come back to this endpoint until the wolf is dead. The user can also hit the `End the game` button to end this simulator early.
-The first action is `ATTACK`. This button takes the player to `/app/E2/fight/turns/attack`.
-The second action is `DODGE`. This button takes the player to `/app/E2/fight/turns/dodge`.
-The third action is `HIDE`. This button takes the player to `/app/E2/fight/turns/hide`.
+This page is where the combat actually starts. There are 3 buttons that represent 3 types of actions a user can choose during combat. After each action, the user will come back to this endpoint until the wolf is dead. The user can also hit the `End the game` button to end this simulator early.
+The first action is `ATTACK`. This button takes the user to `/app/E2/fight/turns/attack`.
+The second action is `DODGE`. This button takes the user to `/app/E2/fight/turns/dodge`.
+The third action is `HIDE`. This button takes the user to `/app/E2/fight/turns/hide`.
 
 ### /app/E2/fight/turns
-This page is where the combat actually starts. There are 3 buttons represents 3 types of actions a player can choose during the combat. After each action, user will come back to this endpoint until the wolf is dead. The user can also hit the `End the game` button to end this simulator early.
-The first action is `ATTACK`. This button takes user to `/app/E2/fight/turns/attack`.
-The second action is `DODGE`. This button takes user to `/app/E2/fight/turns/dodge`.
-The third action is `HIDE`. This button takes user to `/app/E2/fight/turns/hide`.
+This page is where the combat actually starts. There are 3 buttons that represent 3 types of actions a user can choose during combat. After each action, the user will come back to this endpoint until the wolf is dead. The user can also hit the `End the game` button to end this simulator early.
+The first action is `ATTACK`. This button takes the user to `/app/E2/fight/turns/attack`.
+The second action is `DODGE`. This button takes the user to `/app/E2/fight/turns/dodge`.
+The third action is `HIDE`. This button takes the user to `/app/E2/fight/turns/hide`.
 
 ### /app/E2/fight/turns/attack
 This page introduces the rule of making an attack and allows the user to roll a dice to determine whether the attack is successful. 
-If the attack is successful, the `Next` button takes the player to "combat-actions-miss.ejs" , which is a page that tells the player the attack fails. The player can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
-If the attack is successful, the `Next` button takes the player to "combat-actions-damage.ejs", which is a page allowing the player to roll another dice to determine how much the wolf is hurt. The user can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
+If the attack is successful, the `Next` button takes the user to "combat-actions-miss.ejs" , which is a page that tells the user the attack fails. The user can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
+If the attack is successful, the `Next` button takes the user to "combat-actions-damage.ejs", which is a page allowing the user to roll another dice to determine how much the wolf is hurt. The user can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
 
 ### /app/E2/fight/turns/dodge
 This page introduces the rule of dodging, and the user can roll the dice to determine whether the dodge is successful. The user can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
@@ -86,4 +86,4 @@ This page introduces the rule of dodging, and the user can roll the dice to dete
 This page introduces the rule of hiding, and the user can roll the dice to determine whether the hide is successful. The user can hit the `next` button to the `/app/E2/fight/turns` to start another turn.
 
 ### /app/ending
-This page is the ending of the simulator. If the wolf is dead, the player will be directed to the page "/html/ending-win.html". Otherwise, the user will be directed to the page "/html/ending-fail.html". These pages tell the user the result, and the simulator officially ends on these pages. If the user wants to start again, he/she can go back to `/app` to start over.
+This page is the ending of the simulator. If the wolf is dead, the user will be directed to the page "/html/ending-win.html". Otherwise, the user will be directed to the page "/html/ending-fail.html". These pages tell the user the result, and the simulator officially ends on these pages. If the user wants to start again, he/she can go back to `/app` to start over.
