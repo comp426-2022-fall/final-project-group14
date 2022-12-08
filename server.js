@@ -347,7 +347,7 @@ app.get("/app/fighter/", function(req, res){
     res.redirect("/app/ability/")
 })
 
-// User choose wizard
+// User chooses wizard
 app.get("/app/wizard/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -367,7 +367,7 @@ app.get("/app/wizard/", function(req, res){
     res.redirect("/app/ability/")
 })
 
-
+// User chooses ability
 app.get("/app/ability/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -378,7 +378,7 @@ app.get("/app/ability/", function(req, res){
     res.sendFile(__dirname + "/html/ability.html")
 })
 
-// User choose ability
+// User rolls the dice to determine strength
 app.get("/app/ability/str/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
