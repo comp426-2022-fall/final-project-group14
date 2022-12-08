@@ -10,7 +10,7 @@
 <body>
         <h1>Summary</h1>
         <div class="center-screen">
-            <%data.forEach(function(chara) {%>
+            <%var chara = data[0] %>
                 <h1>Name: <%=chara.name%></h1>
                 <h3>Race: <%=chara.race%></h3>
                 <h3>Class: <%=chara.class%></h3>
@@ -24,7 +24,7 @@
                     <li>Wisdom: <%=chara.wis%></li>
                     <li>Charisma: <%=chara.cha%></li>
                 </ul>
-            <%});%>
+            
         <br>
         <br>
             <div>
