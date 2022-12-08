@@ -835,6 +835,12 @@ app.get("/app/accept", function(req, res){
 
     //second:dodge
     app.get("/app/E2/fight/turns/dodge", function(req,res){
+        
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'dodge', '${today.toISOString()}');`;
+        db.exec(stmt1)
+        
         let email = req.app.get('email')
         const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
         var all = stmt2.get();
@@ -855,12 +861,17 @@ app.get("/app/accept", function(req, res){
 
     //third:hide
     app.get("/app/E2/fight/turns/hide", function(req,res){
+        
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'hide', '${today.toISOString()}');`;
+        db.exec(stmt1)
+        
         const hide = acts.slice(38,42);
         var hi_suc = roll(20,1,1).results[0]+3;
-        //console.log(user["bonus"]);
         var success = "";
         var wolfharm = 0;
-        let email = req.app.get('email')
         const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
         var all = stmt2.get();
         var playerlife = all["hd"]
@@ -885,7 +896,13 @@ app.get("/app/accept", function(req, res){
 
     //ending
     app.get("/app/ending",function(req,res){
+        
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
         let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'end game', '${today.toISOString()}');`;
+        db.exec(stmt1)
+        
         const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
         var all = stmt2.get();
         var playerlife = all["hd"]
