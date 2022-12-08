@@ -7,10 +7,8 @@ And here is list of API endpoints we used in our project
 ### Because Our simulator is character-bases, users need to go through the simulator from the beginnig to set up character data to continue. This means you will run into error if you go to the future part (Encounter 1 and 2) without setting up your character first!
 
 ## Login and character set up
-
-
-
-
+### /app/
+This is the beginning of out project. It leads the user to the log-in page. Users have to enter their emails and passwords before they enter the game, so that their settings about their characters can be saved.
 
 ## Story background and Encounter 1
 
@@ -27,7 +25,7 @@ This is the begninning of the Ecounter2: battle section. This apu introduces the
 This page tells player that he/she is noticed by the wolf and forced to joint the fight. The button takes player to `/app/E2/fight`
 
 ### /app/E2/fight
-This end point has a app.get page and a app.post page. The app.get page introduces the firt step of combat which is `determine surprise`. The button `Roll your dice` allows the user to see the result, and the button `next` directs user to the app.post page. (The `join the fight` button in `/app/E2/notyetfight` also takes user to the app.post page.
+This end point has a app.get page and a app.post page. The app.get page introduces the firt step of combat which is `determine surprise`. The button `Roll your dice` allows the user to see the result, and the button `next` directs user to the app.post page. (The `join the fight` button in `/app/E2/notyetfight` also takes user to the app.post page.)
 The app.post page is the second and the third steps of combat. After rolling the dice, the `next` button takes player to the next step, which is `/app/E2/fight/turns`.
 
 ### /app/E2/fight/turns
