@@ -1,11 +1,10 @@
 # List of API Endpoints
 
 Our API has interactions with another [api](https://www.dnd5eapi.co/docs/#overview--getting-started), which is the rule book of the Dnd.
-And here is the list of API endpoints we used in our project
+Below is the list of API endpoints we used in our project.
 
 ## IMPORTANT
 ### Because Our simulator is character-based, users need to go through the simulator from the beginning to set up character data to continue. This means you will run into an error if you go to the future part (Encounter 1 and 2) without setting up your character first!
-
 
 ## Login and character set up
 ### /app/
@@ -28,7 +27,6 @@ This page summarizes all the information about the character the user has just c
 
 
 ## Story background and Encounter 1
-
 ### /app/background/
 This is the beginning of Encounter 1. This API introduces the background story of the game, so that this simulator can be more immersive. After clicking the button at the bottom of the page, you will go to `/app/conversation/` and start a conversation with two characters in the story.
 
@@ -49,7 +47,6 @@ This page takes the user to "exhaustion.ejs", which that the character enters ex
 
 ### /app/survivalcheck/fail
 This page tells the user that the character doesn't survive the cold damage. The button `let's try again` directs to `/app/survivalcheck/`.
-
 
 ## Encounter 2 and ending
 ### /app/E2
