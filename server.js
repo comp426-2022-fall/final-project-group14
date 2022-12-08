@@ -483,6 +483,7 @@ app.get("/app/ability/str/dex/con/int/wis/", function(req, res){
     res.render("wisdom", {roll: result, wis:wis})
 })
 
+// User rolls the dice to determine cha
 app.get("/app/ability/str/dex/con/int/wis/cha/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -537,11 +538,10 @@ app.get("/app/background", function(req, res){
         res.sendFile(__dirname + "/html/reject.html")
     })
 
-//Encounter 1
+//Encounter 1 - the story continues and leads to survival check
 app.get("/app/accept", function(req, res){
     res.sendFile(__dirname + "/html/encounter1.html")
 })
-    //survival check for the player leads to exaustion, failure, or the battle
     var totalfail = 0;
     var continuousfail = 0;
     var exaust = 0;
@@ -552,14 +552,15 @@ app.get("/app/accept", function(req, res){
     const words = await result.json();
     const description = words.desc;
     const explanation = description.slice(0,1);
+
     app.get("/app/survivalcheck",function(req,res){
-        
         const timeElapsed = Date.now();
         const today = new Date(timeElapsed);
         let email = req.app.get('email')
         const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'survival check', '${today.toISOString()}');`;
         db.exec(stmt1)
 
+        // roll 20-sided dices 8 times
         for (var i=0; i<8; i++) {
             dice = Math.floor(Math.random() * 20) + 1;
             dices[i]=dice;
@@ -576,8 +577,8 @@ app.get("/app/accept", function(req, res){
         }
         res.render('survivalcheck',{dices:dices,explanation:explanation})
     })
+
     app.get("/app/survivalcheck/checkresult",function(req,res){
-        
         const timeElapsed = Date.now();
         const today = new Date(timeElapsed);
         let email = req.app.get('email')
