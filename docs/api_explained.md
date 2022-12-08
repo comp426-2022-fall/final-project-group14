@@ -9,22 +9,22 @@ And here is the list of API endpoints we used in our project
 
 ## Login and character set up
 ### /app/
-This is the beginning of our project. It leads the player to the log-in page. Players have to enter their emails and passwords before they enter the game, so that their settings about their characters can be saved.
+This is the beginning of our project. It leads the user to the log-in page. Users have to enter their emails and passwords before they enter the game, so that their settings about their characters can be saved.
 
 ### /app/name/
-This page lets the player name their character. If you click `Name!`, you will go to the next step `/app/choose-race/`.
+This page lets the user name their character. If you click `Name!`, you will go to the next step `/app/choose-race/`.
 
 ### /app/choose-race/
-This is the first step to set up a character. This API describes four races, including elf, dwarf, halfling, and human. For example, if the player chooses elf, the `/app/elf/` updates the character table with race elf and redirects to `/app/class/`.
+This is the first step to set up a character. This API describes four races, including elf, dwarf, halfling, and human. For example, if the user chooses elf, the `/app/elf/` updates the character table with race elf and redirects to `/app/class/`.
 
 ### /app/class/
-This page is similar to `/app/choose-race/`. It gives the player four classes to choose from for their character. After the player decides on a class, it leads to `/app/ability/`.
+This page is similar to `/app/choose-race/`. It gives the user four classes to choose from for their character. After the user decides on a class, it leads to `/app/ability/`.
 
 ### /app/ability/
-This page introduces the rule of determining the score of each ability. The button `Start rolling` leads the player to roll a dice for Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma. Every ability has its own page. On each page, the button `Roll your dice` allows the player to see the result of their dices, and the button `next` directs the player to the page of the next ability. The last endpoint for these abilities is `/app/ability/str/dex/con/int/wis/cha/`.
+This page introduces the rule of determining the score of each ability. The button `Start rolling` leads the user to roll a dice for Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma. Every ability has its own page. On each page, the button `Roll your dice` allows the user to see the result of their dices, and the button `next` directs the user to the page of the next ability. The last endpoint for these abilities is `/app/ability/str/dex/con/int/wis/cha/`.
 
 ### /app/character-summary/
-This page summarizes all the information about the character the player has just created. On this page, in addition to clicking `Start my journey` to enter the game session, the player can also choose to delete the account(`/app/delete_account/`)or re-select abilities(`/app/ability/`). 
+This page summarizes all the information about the character the user has just created. On this page, in addition to clicking `Start my journey` to enter the game session, the user can also choose to delete the account(`/app/delete_account/`)or re-select abilities(`/app/ability/`). 
 
 
 ## Story background and Encounter 1
