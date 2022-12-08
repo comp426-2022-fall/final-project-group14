@@ -36,6 +36,12 @@ This page provides the user two options to make. If you click `reject` button, y
 ### /app/reject/
 This api tells you that you have to make the choice again if you want to enter further games. When you click the `make the choice again` button, you will go back to `/app/conversation/`.
 
+### /app/accept/
+This page continues the story. The button takes the player to `/app/survivalcheck/`.
+
+### /app/survivalcheck/
+This pages introduces the definition of survival check and its result -- exaustion mode. After clicking the button `Roll your dice`, the results of ten dices appear on the screen. The button `next` directs user to different pages, since the result of survival check lead to different mode such as exaustion(`/app/survivalcheck/exhaustion`), failure(`/app/survivalcheck/failure`), and E2(`/app/E2`).
+
 ## Encounter 2 and ending
 ### /app/E2
 This is the begninning of the Ecounter2: battle section. This apu introduces the story background of this battle and give you two buttons to select your decisions. If you choose  `Try to hide`, you will go to `/app/E2/notyetfight`; if you choose `Help Alvan`, you will go to `/app/E2/fight`.
