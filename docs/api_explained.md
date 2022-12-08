@@ -10,6 +10,9 @@ And here is list of API endpoints we used in our project
 ### /app/
 This is the beginning of out project. It leads the user to the log-in page. Users have to enter their emails and passwords before they enter the game, so that their settings about their characters can be saved.
 
+### /app/name
+This page lets the player to name their character. If you click `Name!`, you will go to the next step `/app/choose-race`.
+
 ## Story background and Encounter 1
 
 
