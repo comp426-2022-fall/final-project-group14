@@ -556,30 +556,29 @@ const description = words.desc;
 // Explanation for exhaustion mode
 const explanation = description.slice(0,1);
 
-    app.get("/app/survivalcheck",function(req,res){
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-        let email = req.app.get('email')
-        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'survival check', '${today.toISOString()}');`;
-        db.exec(stmt1)
-
-        // roll 20-sided dices 8 times
-        for (var i=0; i<8; i++) {
-            dice = Math.floor(Math.random() * 20) + 1;
-            dices[i]=dice;
-            if(dice <= 10){
-                totalfail+=1;
-                continuousfail+=1;
-            }
-            if(dice>10){
-                continuousfail=0;
-            }
-            if(continuousfail >= 3){
-                exaust=1;
-            }
+app.get("/app/survivalcheck",function(req,res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'survival check', '${today.toISOString()}');`;
+    db.exec(stmt1)
+    // roll 20-sided dices 8 times
+    for (var i=0; i<8; i++) {
+        dice = Math.floor(Math.random() * 20) + 1;
+        dices[i]=dice;
+        if(dice <= 10){
+            totalfail+=1;
+            continuousfail+=1;
         }
-        res.render('survivalcheck',{dices:dices,explanation:explanation})
-    })
+        if(dice>10){
+            continuousfail=0;
+        }
+        if(continuousfail >= 3){
+            exaust=1;
+        }
+    }
+    res.render('survivalcheck',{dices:dices,explanation:explanation})
+})
 
     // There are several results for the survival check.
     // This redirects to different circumstances.
