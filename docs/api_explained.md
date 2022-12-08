@@ -1,23 +1,23 @@
 # List of API Endpoints
 
 Our API has interactions with another [api](https://www.dnd5eapi.co/docs/#overview--getting-started), which is the rule book of the Dnd.
-And here is list of API endpoints we used in our project
+And here is the list of API endpoints we used in our project
 
 ## IMPORTANT
-### Because Our simulator is character-bases, users need to go through the simulator from the beginnig to set up character data to continue. This means you will run into error if you go to the future part (Encounter 1 and 2) without setting up your character first!
+### Because Our simulator is character-based, users need to go through the simulator from the beginning to set up character data to continue. This means you will run into an error if you go to the future part (Encounter 1 and 2) without setting up your character first!
 
 ## Login and character set up
 ### /app/
-This is the beginning of out project. It leads the user to the log-in page. Users have to enter their emails and passwords before they enter the game, so that their settings about their characters can be saved.
+This is the beginning of our project. It leads the user to the log-in page. Users have to enter their emails and passwords before they enter the game, so that their settings about their characters can be saved.
 
 ### /app/name/
-This page lets the player to name their character. If you click `Name!`, you will go to the next step `/app/choose-race/`.
+This page lets the player name their character. If you click `Name!`, you will go to the next step `/app/choose-race/`.
 
 ### /app/choose-race/
-This is the first step to set up a character. This api describes four races, including elf, dwarf, halfling, and human. For example, if the user chooses elf, the `/app/elf/` updates character table with race elf and redirects to `/app/class/`.
+This is the first step to set up a character. This API describes four races, including elf, dwarf, halfling, and human. For example, if the user chooses elf, the `/app/elf/` updates the character table with race elf and redirects to `/app/class/`.
 
 ### /app/class/
-This page is similar to `/app/choose-race/`. It gives the user four classes to choose for their character. After the user decides a race, it leads to `/app/ability/`.
+This page is similar to `/app/choose-race/`. It gives the user four classes to choose from for their character. After the user decides on a class, it leads to `/app/ability/`.
 
 ### /app/ability/
 This page introduces the rule of determining the the score of each ability. The button `Start rolling` leads the user to roll a dice for Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma. Every ability has its own page. On each page, the button `Roll your dice` allows the user to see the result of their dices, and the button `next` directs user to the page of next ability. The last endpoint for these abilities is `/app/ability/str/dex/con/int/wis/cha/`.
@@ -40,7 +40,13 @@ This api tells you that you have to make the choice again if you want to enter f
 This page continues the story. The button takes the player to `/app/survivalcheck/`.
 
 ### /app/survivalcheck/
-This pages introduces the definition of survival check and its result -- exaustion mode. After clicking the button `Roll your dice`, the results of ten dices appear on the screen. The button `next` directs user to different pages, since the result of survival check lead to different mode such as exaustion(`/app/survivalcheck/exhaustion`), failure(`/app/survivalcheck/failure`), and E2(`/app/E2`).
+This pages introduces the definition of survival check and its result -- exaustion mode. After clicking the button `Roll your dice`, the results of ten dices appear on the screen. The button `next` directs user to different pages, since the result of survival check lead to different mode such as exaustion(`/app/survivalcheck/exhaustion`), failure(`/app/survivalcheck/fail`), and E2(`/app/E2`).
+
+### /app/survivalcheck/exhasution
+This page implies that the character enters exhasution mode. It also shows the level of exhaustion. After clicking the button `Enter the battle`, the player can also go to `/app/E2` and begin Encounter2.
+
+### /app/survivalcheck/fail
+This pages tells the player that the character doesn't survive the cold damage. The button `let's try again` directs to `/app/survivalcheck/`.
 
 ## Encounter 2 and ending
 ### /app/E2
