@@ -13,6 +13,10 @@ This is the beginning of out project. It leads the user to the log-in page. User
 ### /app/name
 This page lets the player to name their character. If you click `Name!`, you will go to the next step `/app/choose-race`.
 
+### /app/choose-race
+This is the first step to set up a character. This api describes four races, including elf, dwarf, halfling, and human. For example, if the user chooses elf, the `/app/elf/` updates character table with race elf and redirects to `/app/class/`.
+
+
 ## Story background and Encounter 1
 
 
