@@ -28,9 +28,13 @@ This page is a summary of all the information about the character the user has j
 ## Story background and Encounter 1
 
 ### /app/background/
-This is the beginning of the Encounter 1. This api introduces the background story of the game, so that this simulator can be more immersive. After clicking the button at the bottom of the page, you will go to `/app/conversation/`.
+This is the beginning of the Encounter 1. This api introduces the background story of the game, so that this simulator can be more immersive. After clicking the button at the bottom of the page, you will go to `/app/conversation/` and start a conversation with two character in the story.
 
+### /app/conversation/
+This page provides the user two options to make. If you click `reject` button, you will go to `/app/reject/`. Otherwise, you will go to `/app/accept/`.
 
+### /app/reject/
+This api tells you that you have to make the choice again if you want to enter further games. When you click the `make the choice again` button, you will go back to `/app/conversation/`.
 
 ## Encounter 2 and ending
 ### /app/E2
