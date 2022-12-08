@@ -706,16 +706,16 @@ app.get("/app/E2/fight", function(req, res){
 });
 
         
-        //if the player choose "try to hide", he is forced to join
-    app.get("/app/E2/notyetfight", function(req, res){
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-        let email = req.app.get('email')
-        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose dodge', '${today.toISOString()}');`;
-        db.exec(stmt1)
+//if the player choose "try to hide", he is forced to join
+app.get("/app/E2/notyetfight", function(req, res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose dodge', '${today.toISOString()}');`;
+    db.exec(stmt1)
 
-        res.sendFile(__dirname + "/html/precombat.html");
-    });
+    res.sendFile(__dirname + "/html/precombat.html");
+});
 
     //step 2&3: roll initiative
     var initi = "You are second to take action!";
