@@ -378,7 +378,7 @@ app.get("/app/ability/", function(req, res){
     res.sendFile(__dirname + "/html/ability.html")
 })
 
-// User rolls the dice to determine strength
+// User rolls the dice to determine str
 app.get("/app/ability/str/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -399,6 +399,7 @@ app.get("/app/ability/str/", function(req, res){
     res.render("strength", {roll: result, strength: strength})
 })
 
+// User rolls the dice to determine dex
 app.get("/app/ability/str/dex/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -419,6 +420,7 @@ app.get("/app/ability/str/dex/", function(req, res){
     res.render("dexterity", {roll: result, dex: dex})
 })
 
+// User rolls the dice to determine con
 app.get("/app/ability/str/dex/con/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -439,6 +441,7 @@ app.get("/app/ability/str/dex/con/", function(req, res){
     res.render("constitution", {roll: result, con: con})
 })
 
+// User rolls the dice to determine int
 app.get("/app/ability/str/dex/con/int/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -459,6 +462,7 @@ app.get("/app/ability/str/dex/con/int/", function(req, res){
     res.render("intelligence", {roll: result, int: int})
 })
 
+// User rolls the dice to determine wis
 app.get("/app/ability/str/dex/con/int/wis/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
