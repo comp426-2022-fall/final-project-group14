@@ -746,28 +746,27 @@ app.post("/app/E2/fight", function(req,res){
     const act = await response2.json();
     const acts = act.desc.split("\n");
 
-    app.get("/app/E2/fight/turns",function(req,res){
+app.get("/app/E2/fight/turns",function(req,res){
         
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-        let email = req.app.get('email')
-        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'user fight turns', '${today.toISOString()}');`;
-        db.exec(stmt1)
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'user fight turns', '${today.toISOString()}');`;
+    db.exec(stmt1)
         
-        const step4 = orderarray.slice(9,10);
-        const head = acts.slice(0,1);
-        const intro = acts.slice(1,5);
-        const attack = acts.slice(6,11);
-        const dodge = acts.slice(28,31);
-        const hide = acts.slice(38,42);
-        
+    const step4 = orderarray.slice(9,10);
+    const head = acts.slice(0,1);
+    const intro = acts.slice(1,5);
+    const attack = acts.slice(6,11);
+    const dodge = acts.slice(28,31);
+    const hide = acts.slice(38,42);    
 
-        if(wolflife<=0){
-            res.redirect("/app/ending");
-        } else{
-            res.render("combat-actions",{hide:hide,dodge:dodge,attack:attack,turns:step4,intro:intro,head:head});
-        }
-    });
+    if(wolflife<=0){
+        res.redirect("/app/ending");
+    } else{
+        res.render("combat-actions",{hide:hide,dodge:dodge,attack:attack,turns:step4,intro:intro,head:head});
+    }
+});
 
     //Three choices
     //first:attack
