@@ -838,10 +838,10 @@ app.get("/app/accept", function(req, res){
         
         const timeElapsed = Date.now();
         const today = new Date(timeElapsed);
+        let email = req.app.get('email')
         const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'dodge', '${today.toISOString()}');`;
         db.exec(stmt1)
         
-        let email = req.app.get('email')
         const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
         var all = stmt2.get();
         var playerlife = all["hd"]
