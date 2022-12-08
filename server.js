@@ -580,24 +580,24 @@ app.get("/app/survivalcheck",function(req,res){
     res.render('survivalcheck',{dices:dices,explanation:explanation})
 })
 
-    // There are several results for the survival check.
-    // This redirects to different circumstances.
-    app.get("/app/survivalcheck/checkresult",function(req,res){
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-        let email = req.app.get('email')
-        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'get survival check result', '${today.toISOString()}');`;
-        db.exec(stmt1)
+// There are several results for the survival check.
+// This redirects to different circumstances.
+app.get("/app/survivalcheck/checkresult",function(req,res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'get survival check result', '${today.toISOString()}');`;
+    db.exec(stmt1)
 
-        if(exaust ==1){
-            return res.redirect("/app/survivalcheck/exhaustion");
-        }
-        else if(totalfail >= 5){
-            return res.redirect("/app/survivalcheck/fail");
-        }else{
-            res.redirect("/app/E2/");
-        }
-    })
+    if(exaust ==1){
+        return res.redirect("/app/survivalcheck/exhaustion");
+    }
+    else if(totalfail >= 5){
+        return res.redirect("/app/survivalcheck/fail");
+    }else{
+        res.redirect("/app/E2/");
+    }
+})
     //if the player becomes exausted
     const level1 = description.slice(1,2);
     const level2 = description.slice(2,3);
