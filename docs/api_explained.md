@@ -30,36 +30,43 @@ This page summarizes all the information about the character the player has just
 ## Story background and Encounter 1
 
 ### /app/background/
-This is the beginning of the Encounter 1. This api introduces the background story of the game, so that this simulator can be more immersive. After clicking the button at the bottom of the page, you will go to `/app/conversation/` and start a conversation with two character in the story.
+This is the beginning of Encounter 1. This API introduces the background story of the game, so that this simulator can be more immersive. After clicking the button at the bottom of the page, you will go to `/app/conversation/` and start a conversation with two characters in the story.
 
 ### /app/conversation/
-This page provides the user two options to make. If you click `reject` button, you will go to `/app/reject/`. Otherwise, you will go to `/app/accept/`.
+This page provides the player with two options to make. If you click the `reject` button, you will go to `/app/reject/`. Otherwise, you will go to `/app/accept/`.
 
 ### /app/reject/
-This api tells you that you have to make the choice again if you want to enter further games. When you click the `make the choice again` button, you will go back to `/app/conversation/`.
+This API tells you that you have to make the choice again if you want to enter further games. When you click the `make the choice again` button, you will go back to `/app/conversation/`.
 
 ### /app/accept/
 This page continues the story. The button takes the player to `/app/survivalcheck/`.
 
 ### /app/survivalcheck/
-This pages introduces the definition of survival check and its result -- exaustion mode. After clicking the button `Roll your dice`, the results of ten dices appear on the screen. The button `next` directs user to different pages, since the result of survival check lead to different mode such as exaustion(`/app/survivalcheck/exhaustion`), failure(`/app/survivalcheck/fail`), and E2(`/app/E2`).
+This page introduces the definition of survival check and its result -- exhaustion mode. After clicking the button `Roll your dice`, the results of ten dices appear on the screen. The button `next` directs the player to different pages, since the result of survival check lead to different modes such as exaustion(`/app/survivalcheck/exhaustion`), failure(`/app/survivalcheck/fail`), and E2(`/app/E2`).
 
-### /app/survivalcheck/exhasution
-This page implies that the character enters exhasution mode. It also shows the level of exhaustion. After clicking the button `Enter the battle`, the player can also go to `/app/E2` and begin Encounter2.
+### /app/survivalcheck/exhaustion
+This page implies that the character enters exhaustion mode. It also shows the level of exhaustion. After clicking the button `Enter the battle`, the player can also go to `/app/E2` and begin Encounter2.
 
 ### /app/survivalcheck/fail
-This pages tells the player that the character doesn't survive the cold damage. The button `let's try again` directs to `/app/survivalcheck/`.
+This page tells the player that the character doesn't survive the cold damage. The button `let's try again` directs to `/app/survivalcheck/`.
+
 
 ## Encounter 2 and ending
 ### /app/E2
-This is the begninning of the Ecounter2: battle section. This apu introduces the story background of this battle and give you two buttons to select your decisions. If you choose  `Try to hide`, you will go to `/app/E2/notyetfight`; if you choose `Help Alvan`, you will go to `/app/E2/fight`.
+This is the beginning of the Ecounter2: battle section. This API introduces the story background of this battle and gives you two buttons to select your decisions. If you choose `Try to hide`, you will go to `/app/E2/notyetfight`; if you choose `Help Alvan`, you will go to `/app/E2/fight`.
 
 ### /app/E2/notyetfight
-This page tells player that he/she is noticed by the wolf and forced to joint the fight. The button takes player to `/app/E2/fight`
+This page tells the player that he/she is noticed by the wolf and forced to join the fight. The button takes the player to `/app/E2/fight`.
 
 ### /app/E2/fight
-This end point has a app.get page and a app.post page. The app.get page introduces the firt step of combat which is `determine surprise`. The button `Roll your dice` allows the user to see the result, and the button `next` directs user to the app.post page. (The `join the fight` button in `/app/E2/notyetfight` also takes user to the app.post page.)
-The app.post page is the second and the third steps of combat. After rolling the dice, the `next` button takes player to the next step, which is `/app/E2/fight/turns`.
+This endpoint has an app.get page and an app.post page. The app.get page introduces the first step of combat which is `determine surprise`. The button `Roll your dice` allows the user to see the result, and the button `next` directs the player to the app.post page. (The `join the fight` button in `/app/E2/notyetfight` also takes the player to the app.post page.)
+The app.post page is the second and the third steps of combat. After rolling the dice, the `next` button takes the player to the next step, which is `/app/E2/fight/turns`.
+
+### /app/E2/fight/turns
+This page is where the combat actually starts. There are 3 buttons that represent 3 types of actions a player can choose during combat. After each action, the player will come back to this endpoint until the wolf is dead. The user can also hit the `End the game` button to end this simulator early.
+The first action is `ATTACK`. This button takes the player to `/app/E2/fight/turns/attack`.
+The second action is `DODGE`. This button takes the player to `/app/E2/fight/turns/dodge`.
+The third action is `HIDE`. This button takes the player to `/app/E2/fight/turns/hide`.
 
 ### /app/E2/fight/turns
 This page is where the combat actually starts. There are 3 buttons represents 3 types of actions a player can choose during the combat. After each action, user will come back to this endpoint until the wolf is dead. The user can also hit the `End the game` button to end this simulator early.
