@@ -628,27 +628,26 @@ app.get("/app/survivalcheck/exhaustion",function(req,res){
     if(level ==3){
         res.render('exhaustion',{level:level3})
     }
-        // 4 - Hit point maximum halved
-        if(level==4){
-            res.render('exhaustion',{level:level4})
-        }
-        // 5 - Speed reduced to 0
-        if(level ==5){
-            res.render('exhaustion',{level:level5})
-        }
-    })
+    // 4 - Hit point maximum halved
+    if(level==4){
+        res.render('exhaustion',{level:level4})
+    }
+    // 5 - Speed reduced to 0
+    if(level ==5){
+        res.render('exhaustion',{level:level5})
+    }
+})
 
-    // if the player fails the survival check
-    app.get("/app/survivalcheck/fail",function(req,res){
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-        let email = req.app.get('email')
-        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'failed survival check', '${today.toISOString()}');`;
-        db.exec(stmt1)
+// if the player fails the survival check
+app.get("/app/survivalcheck/fail",function(req,res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'failed survival check', '${today.toISOString()}');`;
+    db.exec(stmt1)
 
-        res.sendFile(__dirname + "/html/fail.html");
-    })
-
+    res.sendFile(__dirname + "/html/fail.html");
+})
 
 //Encounter 2
     //info from api
