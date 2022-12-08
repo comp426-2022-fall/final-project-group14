@@ -541,6 +541,13 @@ app.get("/app/accept", function(req, res){
     const description = words.desc;
     const explanation = description.slice(0,1);
     app.get("/app/survivalcheck",function(req,res){
+        
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'survival check', '${today.toISOString()}');`;
+        db.exec(stmt1)
+
         for (var i=0; i<8; i++) {
             dice = Math.floor(Math.random() * 20) + 1;
             dices[i]=dice;
@@ -558,6 +565,13 @@ app.get("/app/accept", function(req, res){
         res.render('survivalcheck',{dices:dices,explanation:explanation})
     })
     app.get("/app/survivalcheck/checkresult",function(req,res){
+        
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'get survival check result', '${today.toISOString()}');`;
+        db.exec(stmt1)
+
         if(exaust ==1){
             return res.redirect("/app/survivalcheck/exhaustion");
         }
@@ -575,6 +589,13 @@ app.get("/app/accept", function(req, res){
     const level5 = description.slice(5,6);
 
     app.get("/app/survivalcheck/exhaustion",function(req,res){
+        
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'enter exhaustion mode', '${today.toISOString()}');`;
+        db.exec(stmt1)
+        
         var level = Math.floor(Math.random() * 5) + 1;
         console.log(level)
         //1 - Disadvantage on ability checks
@@ -601,6 +622,12 @@ app.get("/app/accept", function(req, res){
 
     // if the player fails the survival check
     app.get("/app/survivalcheck/fail",function(req,res){
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'failed survival check', '${today.toISOString()}');`;
+        db.exec(stmt1)
+
         res.sendFile(__dirname + "/html/fail.html");
     })
 
