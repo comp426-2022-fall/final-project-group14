@@ -598,36 +598,36 @@ app.get("/app/survivalcheck/checkresult",function(req,res){
         res.redirect("/app/E2/");
     }
 })
-    //if the player becomes exausted
-    const level1 = description.slice(1,2);
-    const level2 = description.slice(2,3);
-    const level3 = description.slice(3,4);
-    const level4 = description.slice(4,5);
-    const level5 = description.slice(5,6);
+    
+//if the player becomes exausted
+const level1 = description.slice(1,2);
+const level2 = description.slice(2,3);
+const level3 = description.slice(3,4);
+const level4 = description.slice(4,5);
+const level5 = description.slice(5,6);
 
-    app.get("/app/survivalcheck/exhaustion",function(req,res){
+app.get("/app/survivalcheck/exhaustion",function(req,res){
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'enter exhaustion mode', '${today.toISOString()}');`;
+    db.exec(stmt1)
         
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-        let email = req.app.get('email')
-        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'enter exhaustion mode', '${today.toISOString()}');`;
-        db.exec(stmt1)
-        
-        // Roll a dice again to determine the level of exhaustion
-        var level = Math.floor(Math.random() * 5) + 1;
-        console.log(level)
-        // 1 - Disadvantage on ability checks
-        if(level == 1){
-            res.render('exhaustion',{level:level1})
-        } 
-        // 2 - Speed halved
-        if(level ==2){
-            res.render('exhaustion',{level:level2})
-        } 
-        // Disadvantage on attack rolls and saving throws
-        if(level ==3){
-            res.render('exhaustion',{level:level3})
-        }
+    // Roll a dice again to determine the level of exhaustion
+    var level = Math.floor(Math.random() * 5) + 1;
+    console.log(level)
+    // 1 - Disadvantage on ability checks
+    if(level == 1){
+        res.render('exhaustion',{level:level1})
+    } 
+    // 2 - Speed halved
+    if(level ==2){
+        res.render('exhaustion',{level:level2})
+    } 
+    // Disadvantage on attack rolls and saving throws
+    if(level ==3){
+        res.render('exhaustion',{level:level3})
+    }
         // 4 - Hit point maximum halved
         if(level==4){
             res.render('exhaustion',{level:level4})
