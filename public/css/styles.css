@@ -12,6 +12,15 @@
     box-shadow:0 30px 30px 30px black inset;
 }
 
+.map {
+    width:60%;
+    position:relative;
+}
+
+.btn {
+    display: inline-block;
+}
+
 *{
     background-color: black;
     color: white;
@@ -32,10 +41,6 @@ img{
     display: block;
     margin-bottom: 20px;
 }
-.map {
-    width:60%;
-    position:relative;
-}
 
 button {
     font-family: Luminari, fantasy;
@@ -48,8 +53,3 @@ button {
     width: 200px;
     cursor: pointer;
   }
-
-.btn {
-    display: inline-block;
-
-}
