@@ -543,16 +543,18 @@ app.get("/app/reject", function(req, res){
 app.get("/app/accept", function(req, res){
     res.sendFile(__dirname + "/html/encounter1.html")
 })
-    var totalfail = 0;
-    var continuousfail = 0;
-    var exaust = 0;
-    var dice =0;
-    var dices = [];
-    const exhaustion = "https://www.dnd5eapi.co/api/conditions/exhaustion";
-    const result = await fetch(exhaustion);
-    const words = await result.json();
-    const description = words.desc;
-    const explanation = description.slice(0,1);
+
+var totalfail = 0;
+var continuousfail = 0;
+var exaust = 0;
+var dice =0;
+var dices = [];
+const exhaustion = "https://www.dnd5eapi.co/api/conditions/exhaustion";
+const result = await fetch(exhaustion);
+const words = await result.json();
+const description = words.desc;
+// Explanation for exhaustion mode
+const explanation = description.slice(0,1);
 
     app.get("/app/survivalcheck",function(req,res){
         const timeElapsed = Date.now();
