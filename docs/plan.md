@@ -21,5 +21,8 @@ Before this meeting, we finished most of the coding including the database. The 
 
 The plan before the meeting on Dec 7 is to wrap everything up, including documentation, so that we can prepare and record the demo video next meeting.
 
+## Meeting 5 - Dec 7
+We recorded the demo video during this meeting and uploaded it to readme.md.
+
 ## Outside the meetings
 We also communicate via group chat about minor issues to ensure consistency among the group. This promotes the effciency of accomplishing tasks, since we changes our plan accordingly as all the information is up-to-date.
