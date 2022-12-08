@@ -22,6 +22,8 @@ For the front end of this prototype, we will discuss the design first and apply 
 
 Guning Shen will be the database lead and ensure the functionality of the database. 
 
+Since Encounter 2 also uses the database, Wenjin Huang will also check for the functionality of our database to ensure that it works for the whole project.
+
 ## Design Lead
 
 Guning Shen will be the design lead.
