@@ -659,52 +659,51 @@ app.get("/app/survivalcheck/fail",function(req,res){
     const combatrule2 = orderarray.slice(5,7);
     var wolflife = 75;
 
-    //start page of battle, explaining the background
-    app.get("/app/E2/", function(req, res){
+//start page of battle, explaining the background
+app.get("/app/E2/", function(req, res){
     
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-        let email = req.app.get('email')
-        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'enter encounter 2', '${today.toISOString()}');`;
-        db.exec(stmt1)
-    
-        res.sendFile(__dirname + "/html/battle.html");
-    });
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'enter encounter 2', '${today.toISOString()}');`;
+    db.exec(stmt1)
 
-    //if the player choose to join the fight, here is the page
-    //step1:determine surprise
-    var win = "you lose";
-    app.get("/app/E2/fight", function(req, res){  
-        
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-        let email = req.app.get('email')
-        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose fight', '${today.toISOString()}');`;
-        db.exec(stmt1)
+    res.sendFile(__dirname + "/html/battle.html");
+});
 
-        const playernum = roll(20,1,1).results[0];
-        const wolfnum = roll(20,1,1).results[0];
-        const choice = "Because you choose to join the fight, you have the chance to surprise the winter wolf. To determine whether you success, you need to roll a 20-side dice. If your number + dexterity is bigger than the number of wolf + wolf wisdom, you win!(p.s wolf wisdom is 12!!)"
-        const surp = orderarray.slice(12,20);
-        const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
-        var all = stmt2.get();
-        var dex = all["dex"]
+//if the player choose to join the fight, here is the page
+//step1:determine surprise
+var win = "you lose";
+app.get("/app/E2/fight", function(req, res){  
         
-        if(playernum+dex>= wolfnum+12){
-            wolflife -= 10;
-            win = "you win! The wolf did not notice you, and you hit it with 10 points!";
-            
-            const stmt3 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'fight-win', '${today.toISOString()}');`;
-            db.exec(stmt3)
-        }else{
-            win = "you lose, the wolf noticed you and you start to fight.";
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose fight', '${today.toISOString()}');`;
+    db.exec(stmt1)
 
-            const stmt3 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'fight-lose', '${today.toISOString()}');`;
-            db.exec(stmt3)
-        }
+    const playernum = roll(20,1,1).results[0];
+    const wolfnum = roll(20,1,1).results[0];
+    const choice = "Because you choose to join the fight, you have the chance to surprise the winter wolf. To determine whether you success, you need to roll a 20-side dice. If your number + dexterity is bigger than the number of wolf + wolf wisdom, you win!(p.s wolf wisdom is 12!!)"
+    const surp = orderarray.slice(12,20);
+    const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
+    var all = stmt2.get();
+    var dex = all["dex"]
         
-        res.render("combat-surprise",{surp:surp,choice:choice,first:orderarray[0],second:combatrule1.toString(),third:orderarray[4],forth:combatrule2.toString(),playernum:playernum,wolfnum:wolfnum,win:win});
-    });
+    if(playernum+dex>= wolfnum+12){
+        wolflife -= 10;
+        win = "you win! The wolf did not notice you, and you hit it with 10 points!";
+        
+        const stmt3 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'fight-win', '${today.toISOString()}');`;
+        db.exec(stmt3)
+    }else{
+        win = "you lose, the wolf noticed you and you start to fight.";
+        const stmt3 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'fight-lose', '${today.toISOString()}');`;
+        db.exec(stmt3)
+    }
+        
+    res.render("combat-surprise",{surp:surp,choice:choice,first:orderarray[0],second:combatrule1.toString(),third:orderarray[4],forth:combatrule2.toString(),playernum:playernum,wolfnum:wolfnum,win:win});
+});
 
         
         //if the player choose "try to hide", he is forced to join
