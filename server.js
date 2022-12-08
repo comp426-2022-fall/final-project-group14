@@ -909,31 +909,31 @@ app.get("/app/E2/fight/turns",function(req,res){
     });
 
     //ending
-    app.get("/app/ending",function(req,res){
+app.get("/app/ending",function(req,res){
         
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-        let email = req.app.get('email')
-        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'end game', '${today.toISOString()}');`;
-        db.exec(stmt1)
-        
-        const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
-        var all = stmt2.get();
-        var playerlife = all["hd"]
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'end game', '${today.toISOString()}');`;
+    db.exec(stmt1)
+    
+    const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
+    var all = stmt2.get();
+    var playerlife = all["hd"]
 
-        if(wolflife <= 0 && playerlife <=0){
-            if(initi==="You are first to take action!"){
-                res.sendFile(__dirname + "/html/ending-win.html");
-            } else{
-                res.sendFile(__dirname + "/html/ending-fail.html");
-            }
-        }
-        if(wolflife <= 0){
+    if(wolflife <= 0 && playerlife <=0){
+        if(initi==="You are first to take action!"){
             res.sendFile(__dirname + "/html/ending-win.html");
         } else{
             res.sendFile(__dirname + "/html/ending-fail.html");
         }
-    });
+    }
+    if(wolflife <= 0){
+        res.sendFile(__dirname + "/html/ending-win.html");
+    } else{
+        res.sendFile(__dirname + "/html/ending-fail.html");
+    }
+});
 
 var port = 3000
 
