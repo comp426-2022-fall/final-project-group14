@@ -785,16 +785,16 @@ app.get("/app/accept", function(req, res){
             const timeElapsed = Date.now();
             const today = new Date(timeElapsed);
             let email = req.app.get('email')
-            const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'attack - hit', '${today.toISOString()}');`;
-            db.exec(stmt1)
+            const stmt2 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'attack - hit', '${today.toISOString()}');`;
+            db.exec(stmt2)
             
             attackresult = "you hit!";
         } else{
             const timeElapsed = Date.now();
             const today = new Date(timeElapsed);
             let email = req.app.get('email')
-            const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'attack - miss', '${today.toISOString()}');`;
-            db.exec(stmt1)
+            const stmt2 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'attack - miss', '${today.toISOString()}');`;
+            db.exec(stmt2)
 
             attackresult = "you miss";
         }
