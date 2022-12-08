@@ -644,11 +644,12 @@ app.get("/app/accept", function(req, res){
 
     //start page of battle, explaining the background
     app.get("/app/E2/", function(req, res){
-    const timeElapsed = Date.now();
-    const today = new Date(timeElapsed);
-    let email = req.app.get('email')
-    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'enter encounter 2', '${today.toISOString()}');`;
-    db.exec(stmt1)
+    
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'enter encounter 2', '${today.toISOString()}');`;
+        db.exec(stmt1)
     
         res.sendFile(__dirname + "/html/battle.html");
     });
@@ -657,11 +658,17 @@ app.get("/app/accept", function(req, res){
     //step1:determine surprise
     var win = "you lose";
     app.get("/app/E2/fight", function(req, res){  
+        
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose fight', '${today.toISOString()}');`;
+        db.exec(stmt1)
+
         const playernum = roll(20,1,1).results[0];
         const wolfnum = roll(20,1,1).results[0];
         const choice = "Because you choose to join the fight, you have the chance to surprise the winter wolf. To determine whether you success, you need to roll a 20-side dice. If your number + dexterity is bigger than the number of wolf + wolf wisdom, you win!(p.s wolf wisdom is 12!!)"
         const surp = orderarray.slice(12,20);
-        let email = req.app.get('email')
         const stmt2 = db.prepare(`SELECT * FROM characters WHERE email = '${email}';`);
         var all = stmt2.get();
         var dex = all["dex"]
@@ -669,8 +676,14 @@ app.get("/app/accept", function(req, res){
         if(playernum+dex>= wolfnum+12){
             wolflife -= 10;
             win = "you win! The wolf did not notice you, and you hit it with 10 points!";
+            
+            const stmt3 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'fight-win', '${today.toISOString()}');`;
+            db.exec(stmt3)
         }else{
             win = "you lose, the wolf noticed you and you start to fight.";
+
+            const stmt3 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'fight-lose', '${today.toISOString()}');`;
+            db.exec(stmt3)
         }
         
         res.render("combat-surprise",{surp:surp,choice:choice,first:orderarray[0],second:combatrule1.toString(),third:orderarray[4],forth:combatrule2.toString(),playernum:playernum,wolfnum:wolfnum,win:win});
@@ -679,12 +692,26 @@ app.get("/app/accept", function(req, res){
         
         //if the player choose "try to hide", he is forced to join
     app.get("/app/E2/notyetfight", function(req, res){
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose dodge', '${today.toISOString()}');`;
+        db.exec(stmt1)
+
         res.sendFile(__dirname + "/html/precombat.html");
     });
 
     //step 2&3: roll initiative
     var initi = "You are second to take action!";
     app.post("/app/E2/fight", function(req,res){
+        
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'user take action', '${today.toISOString()}');`;
+        db.exec(stmt1)
+
+        
         const stepposition = orderarray.slice(7,8);
         const step2 = orderarray.slice(8,9);
         const playernum = roll(20,1,1).results[0];
@@ -705,6 +732,13 @@ app.get("/app/accept", function(req, res){
     const acts = act.desc.split("\n");
 
     app.get("/app/E2/fight/turns",function(req,res){
+        
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'user fight turns', '${today.toISOString()}');`;
+        db.exec(stmt1)
+        
         const step4 = orderarray.slice(9,10);
         const head = acts.slice(0,1);
         const intro = acts.slice(1,5);
@@ -731,6 +765,14 @@ app.get("/app/accept", function(req, res){
     var attackroll = 0;
     var attackresult = "you miss"
     app.get("/app/E2/fight/turns/attack", function(req,res){
+        
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+        let email = req.app.get('email')
+        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'choose attack', '${today.toISOString()}');`;
+        db.exec(stmt1)
+
+        
         const first = attackrule.slice(0,1);
         const sec = attackrule.slice(1,7);
         const attroll = attackrule.slice(10,14);
@@ -739,8 +781,21 @@ app.get("/app/accept", function(req, res){
         attackroll = roll(20,1,1).results[0];
 
         if(attackroll+3 >= 13){
+            
+            const timeElapsed = Date.now();
+            const today = new Date(timeElapsed);
+            let email = req.app.get('email')
+            const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'attack - hit', '${today.toISOString()}');`;
+            db.exec(stmt1)
+            
             attackresult = "you hit!";
         } else{
+            const timeElapsed = Date.now();
+            const today = new Date(timeElapsed);
+            let email = req.app.get('email')
+            const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'attack - miss', '${today.toISOString()}');`;
+            db.exec(stmt1)
+
             attackresult = "you miss";
         }
         res.render("combat-actions-attack",{result:attackresult,playernum:attackroll,modi:modi,attroll:attroll,first:first,sec:sec});
