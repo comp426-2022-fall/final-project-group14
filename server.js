@@ -327,6 +327,7 @@ app.get("/app/cleric/", function(req, res){
     res.redirect("/app/ability/")
 })
 
+// User choose fighter
 app.get("/app/fighter/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -346,6 +347,7 @@ app.get("/app/fighter/", function(req, res){
     res.redirect("/app/ability/")
 })
 
+// User choose wizard
 app.get("/app/wizard/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -364,6 +366,7 @@ app.get("/app/wizard/", function(req, res){
     req.app.set('hd', hd)
     res.redirect("/app/ability/")
 })
+
 
 app.get("/app/ability/", function(req, res){
     const timeElapsed = Date.now();
