@@ -717,29 +717,28 @@ app.get("/app/E2/notyetfight", function(req, res){
     res.sendFile(__dirname + "/html/precombat.html");
 });
 
-    //step 2&3: roll initiative
-    var initi = "You are second to take action!";
-    app.post("/app/E2/fight", function(req,res){
+//step 2&3: roll initiative
+var initi = "You are second to take action!";
+app.post("/app/E2/fight", function(req,res){
         
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-        let email = req.app.get('email')
-        const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'user take action', '${today.toISOString()}');`;
-        db.exec(stmt1)
-
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+    let email = req.app.get('email')
+    const stmt1 = `INSERT INTO logs (email, message, time) VALUES ('${email}', 'user take action', '${today.toISOString()}');`;
+    db.exec(stmt1)
         
-        const stepposition = orderarray.slice(7,8);
-        const step2 = orderarray.slice(8,9);
-        const playernum = roll(20,1,1).results[0];
-        const wolfnum = roll(20,1,1).results[0];
-        const initirule = orderarray.slice(20,28);
-        if(playernum >= wolfnum){
-            initi = "You are first to take action!";
-        }else{
-            initi = "You are second to take action!";
-        }
-        res.render("combat-initiative",{initirule:initirule,position:stepposition, initiative:step2,playernum:playernum,wolfnum:wolfnum,order:initi});
-    });
+    const stepposition = orderarray.slice(7,8);
+    const step2 = orderarray.slice(8,9);
+    const playernum = roll(20,1,1).results[0];
+    const wolfnum = roll(20,1,1).results[0];
+    const initirule = orderarray.slice(20,28);
+    if(playernum >= wolfnum){
+        initi = "You are first to take action!";
+    }else{
+        initi = "You are second to take action!";
+    }
+    res.render("combat-initiative",{initirule:initirule,position:stepposition, initiative:step2,playernum:playernum,wolfnum:wolfnum,order:initi});
+});
 
     //step 4: start the turn and take actions
     const combataction = "https://www.dnd5eapi.co/api/rule-sections/actions-in-combat";
