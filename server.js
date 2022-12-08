@@ -286,6 +286,7 @@ app.get("/app/class/", function(req, res){
     res.sendFile(__dirname + "/html/class.html")
 })
 
+// User chooses barbarian
 app.get("/app/barbarian/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
@@ -306,6 +307,7 @@ app.get("/app/barbarian/", function(req, res){
     res.redirect("/app/ability/")
 })
 
+// User chooses cleric
 app.get("/app/cleric/", function(req, res){
     const timeElapsed = Date.now();
     const today = new Date(timeElapsed);
